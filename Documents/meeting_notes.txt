@@ -1,0 +1,46 @@
+Prototype is due by the 26th
+
+RPG, Fantasy setting
+ * Square tiles
+
+Must complete one level
+
+Character
+ * Warrior class
+ * Need to do concept drawings
+
+70/30 split for scripts (Greg/Galen respectively), 70/30 split for modeling
+(Galen/Greg respectively)
+
+Modeling and art
+ * character
+ * world
+ * Objects/environment
+ * weapons
+ * Enemies (orcs)
+ * textures
+
+Scripts
+ * Inventory
+ * Levelling/experience
+    - Level up once or twice
+ * Movement
+ * Combat
+    - RNG: Accuracy, damage
+    - Turn progression
+ * quest progression
+ * Camera
+ * UI
+ * Enemy death
+ * Player death/loss
+ * traps/puzzle
+
+Extra goal: add a skill or two
+
+For the 26th:
+ * Movement functionality
+ * Simple models
+ * Infant quest system
+ * Attributes
+ * Combat system (basic)
+ * Turn system (basic)
