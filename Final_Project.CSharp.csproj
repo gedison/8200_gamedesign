@@ -63,10 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\script\terrain\Difficult.cs" />
-    <Compile Include="Assets\script\terrain\NoMovement.cs" />
-    <Compile Include="Assets\script\terrain\Normal.cs" />
-    <Compile Include="Assets\script\terrain\Tile.cs" />
+    <Compile Include="Assets\script\tile\Difficult.cs" />
+    <Compile Include="Assets\script\tile\NoMovement.cs" />
+    <Compile Include="Assets\script\tile\Normal.cs" />
+    <Compile Include="Assets\script\tile\Tile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
