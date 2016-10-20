@@ -30,6 +30,10 @@ public abstract class Tile : MonoBehaviour {
         GetComponent<Renderer>().material.SetColor("_Color", defaultTileColor);
     }
 
+    void OnMouseClick() {
+        //WorldController.instance;
+    }
+
     public abstract int getMovementModifier();
     public abstract string toString();
 }

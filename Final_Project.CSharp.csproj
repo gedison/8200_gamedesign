@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\script\WorldController.cs" />
     <Compile Include="Assets\script\tile\Difficult.cs" />
     <Compile Include="Assets\script\tile\NoMovement.cs" />
     <Compile Include="Assets\script\tile\Normal.cs" />
