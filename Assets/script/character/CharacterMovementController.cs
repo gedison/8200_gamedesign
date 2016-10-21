@@ -11,10 +11,6 @@ public class CharacterMovementController : MonoBehaviour {
     private Transform currentTarget;
     private bool isMoving = false;
 
-	void Start () {
-	
-	}
-
 	void Update () {
         if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {      
             Vector3 target = currentTarget.position;
@@ -23,7 +19,6 @@ public class CharacterMovementController : MonoBehaviour {
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
         }
-	
 	}
 
     public void setPath(List<Node> path) {
