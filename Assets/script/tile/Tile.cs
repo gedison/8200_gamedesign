@@ -19,7 +19,11 @@ public abstract class Tile : MonoBehaviour {
     }
 
     void OnMouseEnter() {
-        WorldController.instance.setCurrentPath(this.GetComponent<Transform>());
+        WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
+    }
+
+    void OnMouseDown() {
+        WorldController.instance.moveToTile();
     }
 
     void Update() {

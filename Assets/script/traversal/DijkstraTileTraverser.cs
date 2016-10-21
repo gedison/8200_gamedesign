@@ -18,6 +18,14 @@
         this.height = height;
     }
 
+    public void setOmnidirectional() {
+        isCartesian = false;
+    }
+
+    public void setCartesian() {
+        isCartesian = true;
+    }
+
     public Node[] getTileTrafersal(int start) {
         Node[] nodes = new Node[width * height];
         for (int i = 0; i < (width * height); i++) nodes[i] = new Node(i, weights[i]);
@@ -33,14 +41,6 @@
             nodes[minIndex].setHasBeenVisited();
             minIndex = getMinimumNodeIndex(nodes);
         }return nodes;
-    }
-
-    public void setOmnidirectional() {
-        isCartesian = false;
-    }
-
-    public void setCartesian() {
-        isCartesian = true;
     }
 
     private int getMinimumNodeIndex(Node[] nodes) {

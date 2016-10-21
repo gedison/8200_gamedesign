@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class WorldController : MonoBehaviour {
 
     public static WorldController instance = null;
     public GameObject tiles;
+    public GameObject player;
 
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
     private Node[] traversalMap;
     private Node savedNode = null;
     private TileTraverser tileTraverser;
+    private int lastID;
 
     void Awake() {
         if (instance == null) instance = this;
@@ -21,34 +22,31 @@ public class WorldController : MonoBehaviour {
     private void StartGame() {
         int[] weights = new int[tileHeight * tileWidth];
         tileArray = new Transform[tileHeight * tileWidth];
-
-        int height = 0;
+       
+        int height = 0, width = 0;
         foreach (Transform tileRow in tiles.transform) {
-            int width = 0;
+            width = 0;
             foreach(Transform tile in tileRow.transform) {
                 tileArray[(height * tileWidth) + width] = tile;
                 weights[(height * tileWidth) + width] = tile.GetComponent<Tile>().getMovementModifier();
                 width++;
             }height++;  
-        }
-
-        tileTraverser = new DijkstraTileTraverser(weights, tileWidth, tileHeight, true);
-        traversalMap = tileTraverser.getTileTrafersal(7);
+        } tileTraverser = new DijkstraTileTraverser(weights, tileWidth, tileHeight, true);
     }
 
-    private int getSelectedTileIndex(Transform selectedTile) {
-        for(int i=0; i<tileArray.Length; i++) {
-            if (selectedTile.GetInstanceID() == tileArray[i].GetInstanceID()) return i;
+    private int getTileIndexFromID(int tileID) {
+        for (int i = 0; i < tileArray.Length; i++) {
+            if (tileID == tileArray[i].GetInstanceID()) return i;
         }return -1;
     }
 
-    public void setCurrentPath(Transform selectedTile) {
+    public void setCurrentPath(int tileID) {
         while(savedNode != null) {
             tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
             savedNode = savedNode.getPreviousNode();
         }
 
-        int index = getSelectedTileIndex(selectedTile);
+        int index = getTileIndexFromID(tileID);
         if (index != -1) {
             Node selectedNode = traversalMap[index];
             savedNode = traversalMap[index];
@@ -61,8 +59,22 @@ public class WorldController : MonoBehaviour {
         }
     }
 
+    public void moveToTile() {
+        /*
+        while (savedNode != null) {
+            Debug.Log(tileArray[savedNode.getID()].transform.position.x + " " + tileArray[savedNode.getID()].transform.position.z);
+            savedNode = savedNode.getPreviousNode();
+        }
+        */
+
+    }
+
     void Update() {
-     
+        int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
+        if (currentID != lastID) {
+            traversalMap = tileTraverser.getTileTrafersal(getTileIndexFromID(currentID));
+            lastID = currentID;
+        }
     }
 }
 
