@@ -22,8 +22,12 @@ public abstract class Tile : MonoBehaviour {
         WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
     }
 
+    void OnMouseOver() {
+        if(currentState == TileState.NOT_SELECTED) WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
+    }
+
     void OnMouseDown() {
-        WorldController.instance.moveToTile();
+        WorldController.instance.moveToTile(GetComponent<Transform>().GetInstanceID());
     }
 
     void Update() {
