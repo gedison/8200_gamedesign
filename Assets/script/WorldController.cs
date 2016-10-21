@@ -65,7 +65,7 @@ public class WorldController : MonoBehaviour {
                 savedNode = traversalMap[index];
                 while (selectedNode != null) {
                     int distanceFromStart = selectedNode.getDistanceFromStart();
-                    if (distanceFromStart < player.GetComponent<CharacterMovementController>().movement) tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
+                    if (distanceFromStart < player.GetComponent<CharacterMovementController>().movementSpeed) tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
                     else tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_OUTSIDE_RANGE);
                     selectedNode = selectedNode.getPreviousNode();
                 }
@@ -80,7 +80,7 @@ public class WorldController : MonoBehaviour {
       
         List<Node> path = new List<Node>();
         while (savedNode != null) {
-            if (savedNode.getDistanceFromStart() < player.GetComponent<CharacterMovementController>().movement) {
+            if (savedNode.getDistanceFromStart() < player.GetComponent<CharacterMovementController>().movementSpeed) {
                 path.Insert(0, savedNode);
             }else {
                 tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);

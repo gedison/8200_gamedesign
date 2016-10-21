@@ -3,20 +3,24 @@ using System.Collections.Generic;
 
 public class CharacterMovementController : MonoBehaviour {
 
-    public float speed = 5.0f;
-    public float playerHeight = 0.6f;
-    public float movement = 6;
+    public float animationSpeed = 5.0f;
+    public float movementSpeed = 6;
 
     private List<Node> path;
     private Transform currentTarget;
+    private float playerHeight;
     private bool isMoving = false;
 
-	void Update () {
+    void Start() {
+        playerHeight = transform.position.y;
+    }
+
+    void Update () {
         if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {      
             Vector3 target = currentTarget.position;
             target.y = playerHeight;
 
-            float step = speed * Time.deltaTime;
+            float step = animationSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
         }
 	}

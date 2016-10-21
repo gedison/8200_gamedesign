@@ -8,8 +8,8 @@ public class SecondPersonCamera : MonoBehaviour {
     private float cameraSpeed;
 
     void Start() {
-        cameraSpeed = player.GetComponent<CharacterMovementController>().movement - 1;
-        offset.y += player.GetComponent<CharacterMovementController>().playerHeight;
+        cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed - 1;
+        offset.y += player.transform.position.y;
     }
 
     void LateUpdate() {
