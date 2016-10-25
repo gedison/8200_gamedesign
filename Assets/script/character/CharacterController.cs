@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+
 
 public class CharacterController : MonoBehaviour {
 
@@ -19,7 +19,8 @@ public class CharacterController : MonoBehaviour {
     public int totalActionPoints = 5;
     private int currentActionPoints;
 
-    private CharacterState currentCharacterState = CharacterState.NOT_IN_COMBAT;
+    private CharacterState currentCharacterState = CharacterState.MOVE;
+  
 
     public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
     public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS };
@@ -78,6 +79,14 @@ public class CharacterController : MonoBehaviour {
 
     public CharacterAttribute getCurrentSkillVersus() {
         return currentSkill.getSkillVersus();
+    }
+
+    public void setCurrentCharacterState(CharacterState state) {
+        currentCharacterState = state;
+    }
+
+    public CharacterState getCurrentCharacterState() {
+        return currentCharacterState;
     }
 
     void Update () {
