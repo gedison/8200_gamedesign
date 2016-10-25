@@ -1,4 +1,4 @@
-﻿interface Profession{
+﻿public interface Profession{
     int getBaseStrength();
     int getBaseDexterity();
     int getBaseIntelligence();

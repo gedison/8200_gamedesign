@@ -3,9 +3,10 @@
     public int numberOfDice;
     public int numberOfSidesOnDie;
 
-    public int getBaseDamage(){
-        int damage = 0;
+    public int getAttackDamage(){
         Die myDie = new Die(numberOfSidesOnDie);
+
+        int damage = 0;
         for(int i=0; i<numberOfDice; i++)damage += myDie.getDiceRoll();
         return damage;
     }

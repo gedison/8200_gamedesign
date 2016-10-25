@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Assets\script\WorldController.cs" />
     <Compile Include="Assets\script\camera\SecondPersonCamera.cs" />
-    <Compile Include="Assets\script\character\Character.cs" />
     <Compile Include="Assets\script\character\CharacterMovementController.cs" />
     <Compile Include="Assets\script\character\CharacterPosition.cs" />
     <Compile Include="Assets\script\character\Health.cs" />
@@ -75,6 +74,9 @@
     <Compile Include="Assets\script\item\Weapon.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
     <Compile Include="Assets\script\profession\Warrior.cs" />
+    <Compile Include="Assets\script\skill\BlastSkill.cs" />
+    <Compile Include="Assets\script\skill\BurstSkill.cs" />
+    <Compile Include="Assets\script\skill\Skill.cs" />
     <Compile Include="Assets\script\tile\Difficult.cs" />
     <Compile Include="Assets\script\tile\NoMovement.cs" />
     <Compile Include="Assets\script\tile\Normal.cs" />
