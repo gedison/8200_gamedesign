@@ -6,6 +6,7 @@ public class WorldController : MonoBehaviour {
     public static WorldController instance = null;
     public GameObject tiles;
     public GameObject player;
+    public GameObject enemies;
 
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
@@ -69,7 +70,7 @@ public class WorldController : MonoBehaviour {
         resetLastPath();
 
       
-
+        //Player Skill Usage
         CharacterController myCharacterController = player.GetComponent<CharacterController>();
         tilesEffectedByPlayerSkill = myCharacterController.getTilesEffectedByCurrentSkill(index);
         for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
@@ -82,7 +83,7 @@ public class WorldController : MonoBehaviour {
  
 
         /*
-        resetLastPath();
+         * //Player Movement
         int index = getTileIndexFromID(tileID);
         if (index != -1) {
             if (traversalMap!= null && traversalMap[index] != null) { 
@@ -101,7 +102,28 @@ public class WorldController : MonoBehaviour {
     public void onTileSelect(int tileID) {
         if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
 
+        //Player Skill Usage
+        CharacterController myCharacterController = player.GetComponent<CharacterController>();
+        CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
+        int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+        foreach (Transform enemy in enemies.transform) {
+            int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
+            Debug.Log(enemyPosition);
+            for(int i=0; i<tilesEffectedByPlayerSkill.Length; i++) {
+                if(tilesEffectedByPlayerSkill[i] == enemyPosition) {
+                    int playerRole = myCharacterController.roleD20ForCurrentSkill();
+                    Debug.Log(playerRole + " " + enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus));
+                    if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                        enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+                        Debug.Log("HIT: " + skillDamage+" ENEMY HEALTH: "+enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
+                    }       
+                }
+            }     
+         }
+
+
         /*
+        //Player Movement
         List<Node> path = new List<Node>();
         while (savedNode != null) {
             if (savedNode.getDistanceFromStart() < player.GetComponent<CharacterMovementController>().movementSpeed) path.Insert(0, savedNode);

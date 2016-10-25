@@ -4,7 +4,7 @@ using System.Collections;
 public class BurstSkill : Skill {
 
     private int burstSize;
-    public BurstSkill(string skillName, string skillDescription, int diceNum, int diceSides, int burstSize) : base(skillName, skillDescription, diceNum, diceSides) {
+    public BurstSkill(string skillName, string skillDescription, CharacterController.CharacterAttribute attribute, CharacterController.CharacterAttribute versus, int diceNum, int diceSides, int burstSize) : base(skillName, skillDescription, attribute, versus, diceNum, diceSides) {
         this.burstSize = burstSize;
     }
 

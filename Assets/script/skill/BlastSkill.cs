@@ -4,7 +4,7 @@ using System.Collections;
 public class BlastSkill : Skill {
 
     private int blastSize, maxDistanceFromPlayer;
-    public BlastSkill(string skillName, string skillDescription, int diceNum, int diceSides, int blastSize, int maxDistanceFromPlayer) : base(skillName, skillDescription, diceNum, diceSides) {
+    public BlastSkill(string skillName, string skillDescription, CharacterController.CharacterAttribute attribute, CharacterController.CharacterAttribute versus, int diceNum, int diceSides, int blastSize, int maxDistanceFromPlayer) : base(skillName, skillDescription, attribute, versus, diceNum, diceSides) {
         this.blastSize = blastSize;
         this.maxDistanceFromPlayer = maxDistanceFromPlayer;
     }

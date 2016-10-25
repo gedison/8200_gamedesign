@@ -9,6 +9,10 @@ public class Health : MonoBehaviour {
         currentHealth = totalHealth;
 	}
 
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
     public void incrementCurrentHealthByX(int x) {
         currentHealth = ((currentHealth + x) > totalHealth) ? totalHealth : (currentHealth + x);
     }

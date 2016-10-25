@@ -22,7 +22,7 @@ public class CharacterController : MonoBehaviour {
     private CharacterState currentCharacterState = CharacterState.NOT_IN_COMBAT;
 
     public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
-    public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM };
+    public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS };
 
     void Start() {
         switch (professionString) {
@@ -35,7 +35,7 @@ public class CharacterController : MonoBehaviour {
         myHealth.totalHealth = myProfession.getBaseHealth();
 
         currentActionPoints = totalActionPoints;
-        currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", 1, 3, 1, 1);
+        currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
     }
 
     public void endTurn() {
@@ -44,15 +44,20 @@ public class CharacterController : MonoBehaviour {
     }
 
     public int roleD20UsingAttributeAsModifier(CharacterAttribute attribute) {
-        return d20.getDiceRoll() + getModifierOfAttribute(attribute);
+        if (attribute == CharacterAttribute.ARMOR_CLASS) return getArmorClass();
+        else return d20.getDiceRoll() + getModifierOfAttribute(attribute);
     }
 
     public int getModifierOfAttribute(CharacterAttribute attribute) {
         return (myProfession.getBaseAttribute(attribute) + level) / 2;
     }
 
-    public int getArmorClass() {
+    private int getArmorClass() {
         return equipedArmor.GetComponent<Armor>().armorClass;
+    }
+
+    public int roleD20ForCurrentSkill() {
+        return roleD20UsingAttributeAsModifier(currentSkill.getSkillAttribute());
     }
 
     public bool isTileWithinRangeOfCurrentSkill(int tileIndex) {
@@ -69,6 +74,10 @@ public class CharacterController : MonoBehaviour {
 
     public int getDamageFromCurrentSkill() {
         return equipedWeapon.GetComponent<Weapon>().getAttackDamage() + currentSkill.getAttackDamage();
+    }
+
+    public CharacterAttribute getCurrentSkillVersus() {
+        return currentSkill.getSkillVersus();
     }
 
     void Update () {
