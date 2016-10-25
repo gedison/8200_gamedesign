@@ -10,8 +10,7 @@ public class BurstSkill : Skill {
 
     override
     public bool isTileWithinRangeOfSkill(int boardWidth, int boardHeight, int skillOrigin, int playerOrigin) {
-        bool isTileWithinRange = false;
-        return isTileWithinRange;
+        return true;
     }
 
     override

@@ -19,7 +19,7 @@ public class BlastSkill : Skill {
         playerY = playerOrigin / boardWidth;
 
         int distance = (int)Mathf.Sqrt(Mathf.Pow((playerX - skillX), 2) + Mathf.Pow((playerY - skillY), 2));
-        if (distance <= maxDistanceFromPlayer) return true;
+        if (distance <= maxDistanceFromPlayer && distance>0) return true;
         else return false;
     }
 

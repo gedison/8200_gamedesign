@@ -14,6 +14,8 @@ public class WorldController : MonoBehaviour {
     private TileTraverser tileTraverser = null;
     private int lastID;
 
+    private int[] tilesEffectedByPlayerSkill;
+
     void Awake() {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(gameObject);
@@ -41,7 +43,7 @@ public class WorldController : MonoBehaviour {
         return tileArray[tileID];
     }
 
-    private int getTileIndexFromID(int tileID) {
+    public int getTileIndexFromID(int tileID) {
         for (int i = 0; i < tileArray.Length; i++) {
             if (tileID == tileArray[i].GetInstanceID()) return i;
         }return -1;
@@ -52,11 +54,34 @@ public class WorldController : MonoBehaviour {
             tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
             savedNode = savedNode.getPreviousNode();
         }
+
+        if (tilesEffectedByPlayerSkill != null) {
+            for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                tileArray[tilesEffectedByPlayerSkill[i]].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
+            }
+        }
     }
 
-    public void setCurrentPath(int tileID) {
+    public void onTileHover(int tileID) {
         if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        int index = getTileIndexFromID(tileID);
 
+        resetLastPath();
+
+      
+
+        CharacterController myCharacterController = player.GetComponent<CharacterController>();
+        tilesEffectedByPlayerSkill = myCharacterController.getTilesEffectedByCurrentSkill(index);
+        for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+            tileArray[tilesEffectedByPlayerSkill[i]].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
+        }
+        
+
+
+
+ 
+
+        /*
         resetLastPath();
         int index = getTileIndexFromID(tileID);
         if (index != -1) {
@@ -70,12 +95,13 @@ public class WorldController : MonoBehaviour {
                     selectedNode = selectedNode.getPreviousNode();
                 }
             }
-        }
+        }*/
     }
 
-    public void moveToTile(int tileID) {
+    public void onTileSelect(int tileID) {
         if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
 
+        /*
         List<Node> path = new List<Node>();
         while (savedNode != null) {
             if (savedNode.getDistanceFromStart() < player.GetComponent<CharacterMovementController>().movementSpeed) path.Insert(0, savedNode);
@@ -84,6 +110,7 @@ public class WorldController : MonoBehaviour {
         }
 
         if(path.Count>0)player.GetComponent<CharacterMovementController>().setPath(path);
+        */
     }
 
     void Update() {

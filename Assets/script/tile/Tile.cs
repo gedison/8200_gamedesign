@@ -21,15 +21,15 @@ public abstract class Tile : MonoBehaviour {
     */
 
     void OnMouseEnter() {
-        WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
+        WorldController.instance.onTileHover(GetComponent<Transform>().GetInstanceID());
     }
 
     void OnMouseOver() {
-        if(currentState == TileState.NOT_SELECTED) WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
+        if(currentState == TileState.NOT_SELECTED) WorldController.instance.onTileHover(GetComponent<Transform>().GetInstanceID());
     }
 
     void OnMouseDown() {
-        WorldController.instance.moveToTile(GetComponent<Transform>().GetInstanceID());
+        WorldController.instance.onTileSelect(GetComponent<Transform>().GetInstanceID());
     }
 
     void Update() {

@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\script\WorldController.cs" />
     <Compile Include="Assets\script\camera\SecondPersonCamera.cs" />
+    <Compile Include="Assets\script\character\CharacterController.cs" />
     <Compile Include="Assets\script\character\CharacterMovementController.cs" />
     <Compile Include="Assets\script\character\CharacterPosition.cs" />
     <Compile Include="Assets\script\character\Health.cs" />
