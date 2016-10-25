@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class CharacterMovementController : MonoBehaviour {
 
-    public float animationSpeed = 5.0f;
-    public float movementSpeed = 6;
+    public float animationSpeed = 3.0f;
+    public float movementSpeed = 4;
 
     private List<Node> path;
     private Transform currentTarget;

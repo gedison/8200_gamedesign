@@ -13,7 +13,6 @@ public class SecondPersonCamera : MonoBehaviour {
     }
 
     void LateUpdate() {
-        //transform.rotation = Quaternion.identity;
         transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
     }
 }

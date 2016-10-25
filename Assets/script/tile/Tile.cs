@@ -2,7 +2,7 @@
 
 public abstract class Tile : MonoBehaviour {
 
-    public Texture tileTexture;
+    //public Texture tileTexture;
 
     public Color withinRangeTileColor = new Color(1, 1, .45f);
     public Color outsideOfRangeTileColor = new Color(1, 0, 0);
@@ -11,12 +11,14 @@ public abstract class Tile : MonoBehaviour {
     public enum TileState {SELECTED_WITHIN_RANGE, SELECTED_OUTSIDE_RANGE, NOT_SELECTED};
     private TileState currentState = TileState.NOT_SELECTED, lastState = TileState.NOT_SELECTED;
 
+    /*
     void Start() {
         if (GetComponent<Renderer>().material.name.Contains("Default")) {
             if (tileTexture != null) GetComponent<Renderer>().material.mainTexture = tileTexture;
             else GetComponent<Renderer>().material.mainTexture = Resources.Load("default", typeof(Texture2D)) as Texture2D;
         }
     }
+    */
 
     void OnMouseEnter() {
         WorldController.instance.setCurrentPath(GetComponent<Transform>().GetInstanceID());
@@ -53,7 +55,7 @@ public abstract class Tile : MonoBehaviour {
         }
     }
 
-    public void setCurrentState(Tile.TileState newState) {
+    public void setCurrentState(TileState newState) {
         currentState = newState;
     }
 
