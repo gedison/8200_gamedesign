@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class WorldController : MonoBehaviour {
 
+	public enum GameState { MOVE, ATTACK, IDLE, ENDED };
+	public GameState currentState = GameState.MOVE;
+
     public static WorldController instance = null;
     public GameObject tiles;
     public GameObject player;
@@ -25,7 +28,7 @@ public class WorldController : MonoBehaviour {
         else if (instance != this) Destroy(gameObject);
         StartGame();
     }
-
+		
     private void StartGame() {
         int[] weights = new int[tileHeight * tileWidth];
         tileArray = new Transform[tileHeight * tileWidth];
@@ -116,13 +119,16 @@ public class WorldController : MonoBehaviour {
         CharacterController myCharacterController = player.GetComponent<CharacterController>();
 
         switch (myCharacterController.getCurrentCharacterState()) {
-            case CharacterController.CharacterState.MOVE:
-                List<Node> path = new List<Node>();
-                while (savedNode != null) {
-                    if (savedNode.getDistanceFromStart() < player.GetComponent<CharacterMovementController>().movementSpeed) path.Insert(0, savedNode);
-                    else tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
-                    savedNode = savedNode.getPreviousNode();
-                }if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
+		case CharacterController.CharacterState.MOVE:
+			List<Node> path = new List<Node> ();
+			while (savedNode != null) {
+				if (savedNode.getDistanceFromStart () < player.GetComponent<CharacterMovementController> ().movementSpeed)
+					path.Insert (0, savedNode);
+				else
+					tileArray [savedNode.getID ()].GetComponent<Tile> ().setCurrentState (Tile.TileState.NOT_SELECTED);
+				savedNode = savedNode.getPreviousNode ();
+			}
+				if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
 
                 break;
             case CharacterController.CharacterState.ATTACK:
@@ -132,7 +138,7 @@ public class WorldController : MonoBehaviour {
                     int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
                     Debug.Log(enemyPosition);
                     for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
-                        if (tilesEffectedByPlayerSkill[i] == enemyPosition) {
+					if (tilesEffectedByPlayerSkill[i] == enemyPosition) { 
                             int playerRole = myCharacterController.roleD20ForCurrentSkill();
                             Debug.Log(playerRole + " " + enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus));
                             if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
@@ -148,11 +154,36 @@ public class WorldController : MonoBehaviour {
     }
 
     void Update() {
+		/* Check player */
+		switch (currentState) {
+		case GameState.MOVE: // ALlow the user to move
+			break;
+		case GameState.ATTACK: // Attack/Skill state
+			// Allow them to use skills
+			// Allow them to click button to switch states
+			// ESC switches back to move
+			// Check action points
+			break;
+		case GameState.IDLE:
+			// Allow them to end their turn, otherwise do nothing
+			// Once they end turn, switch to ended.
+			break;
+		case GameState.ENDED:
+			foreach (Transform enemy in enemies.transform) {
+				//enemy.GetComponent<AI>.Run();
+			}
+			currentState = GameState.MOVE;
+			break;
+		}
+
+		/* Go through all of the enemies */
+
         int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
         if (currentID != lastID) {
             traversalMap = tileTraverser.getTileTrafersal(getTileIndexFromID(currentID));
             lastID = currentID;
         }
+
     }
 }
 

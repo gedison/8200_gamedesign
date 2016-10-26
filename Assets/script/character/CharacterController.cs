@@ -19,11 +19,21 @@ public class CharacterController : MonoBehaviour {
     public int totalActionPoints = 5;
     private int currentActionPoints;
 
+	private int prevTileID;
+
     private CharacterState currentCharacterState = CharacterState.MOVE;
   
 
     public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
     public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS };
+
+	int getPrevTile() {
+		return prevTileID;
+	}
+
+	void setPrevTile(int id) {
+		prevTileID = id;
+	}
 
     void Start() {
         switch (professionString) {
@@ -90,6 +100,6 @@ public class CharacterController : MonoBehaviour {
     }
 
     void Update () {
-	
+
 	}
 }
