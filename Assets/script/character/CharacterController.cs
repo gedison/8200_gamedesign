@@ -46,8 +46,11 @@ public class CharacterController : MonoBehaviour {
         myHealth.totalHealth = myProfession.getBaseHealth();
 
         currentActionPoints = totalActionPoints;
-        currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
-    }
+        //currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
+        currentSkill = new BurstSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1);
+    
+
+}
 
     public void endTurn() {
         currentActionPoints = totalActionPoints;
@@ -79,7 +82,7 @@ public class CharacterController : MonoBehaviour {
     public int[] getTilesEffectedByCurrentSkill(int tileIndex) {
         if (isTileWithinRangeOfCurrentSkill(tileIndex)) {
             int characterPosition = WorldController.instance.getTileIndexFromID(GetComponent<CharacterPosition>().getCurrentInstanceID());
-            return currentSkill.getTilesAffectedBySkillFromOrigin(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition);
+            return (int [])currentSkill.getTilesAffectedBySkillFromOrigin(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition).ToArray(typeof(int));
         } else return new int[] { };
     }
 

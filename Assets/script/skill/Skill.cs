@@ -1,4 +1,6 @@
-﻿public abstract class Skill {
+﻿using System.Collections;
+
+public abstract class Skill {
 
     private CharacterController.CharacterAttribute skillAttribute;
     private CharacterController.CharacterAttribute skillVersus;
@@ -32,7 +34,6 @@
 
     public int getAttackDamage() {
         Die myDie = new Die(numberOfSidesOnDie);
-
         int damage = 0;
         for (int i = 0; i < numberOfDice; i++) damage += myDie.getDiceRoll();
         return damage;
@@ -40,5 +41,5 @@
 
     public abstract bool isTileWithinRangeOfSkill(int boardWidth, int boardHeight, int skillOrigin, int playerOrigin);
 
-    public abstract int[] getTilesAffectedBySkillFromOrigin(int boardWidth, int boardHeight, int skillOrigin, int playerOrigin);
+    public abstract ArrayList getTilesAffectedBySkillFromOrigin(int boardWidth, int boardHeight, int skillOrigin, int playerOrigin);
 }
