@@ -7,7 +7,16 @@ public class CharacterPosition : MonoBehaviour {
 
     void Update() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit))currentInstanceID = hit.transform.GetInstanceID();
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit)) {
+            int temp = hit.transform.GetInstanceID();
+            if (temp != currentInstanceID) {
+                WorldController.instance.switchTileIsOccupied(currentInstanceID);
+                currentInstanceID = temp;
+                WorldController.instance.switchTileIsOccupied(currentInstanceID);
+            }
+
+        }
+        
 
     }
 

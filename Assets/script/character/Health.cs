@@ -6,7 +6,6 @@ public class Health : MonoBehaviour {
     public Text selectedText;
     public int totalHealth = 20;
     private int currentHealth;
-    private bool isSelected = false;
 
 	void Start () {
         currentHealth = totalHealth;
@@ -29,14 +28,10 @@ public class Health : MonoBehaviour {
         selectedText.GetComponent<TextSelect>().gameObjectWithHealth = this.gameObject;
     }
 
-
-
     void Update() {
         if (currentHealth == 0) {
             selectedText.GetComponent<TextSelect>().gameObjectWithHealth = null;
             Destroy(this.gameObject);
         }
     }
-
-
 }

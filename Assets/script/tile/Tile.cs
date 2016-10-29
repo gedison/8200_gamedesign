@@ -3,21 +3,12 @@
 public abstract class Tile : MonoBehaviour {
 
     //public Texture tileTexture;
-
+    public bool tileIsOccupied = false;
     public Color withinRangeTileColor = new Color(1, 1, .45f);
     public Color outsideOfRangeTileColor = new Color(1, 0, 0);
     private Color defaultTileColor = new Color(1, 1, 1);
     public enum TileState {SELECTED_WITHIN_RANGE, SELECTED_OUTSIDE_RANGE, NOT_SELECTED};
     private TileState currentState = TileState.NOT_SELECTED, lastState = TileState.NOT_SELECTED;
-
-    /*
-    void Start() {
-        if (GetComponent<Renderer>().material.name.Contains("Default")) {
-            if (tileTexture != null) GetComponent<Renderer>().material.mainTexture = tileTexture;
-            else GetComponent<Renderer>().material.mainTexture = Resources.Load("default", typeof(Texture2D)) as Texture2D;
-        }
-    }
-    */
 
     void OnMouseEnter() {
         WorldController.instance.onTileHover(GetComponent<Transform>().GetInstanceID());
@@ -32,7 +23,6 @@ public abstract class Tile : MonoBehaviour {
     }
 
     void Update() {
-
         if (currentState != lastState) {
             switch (currentState) {
                 case TileState.NOT_SELECTED:

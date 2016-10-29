@@ -68,6 +68,10 @@ public class WorldController : MonoBehaviour {
         }return -1;
     }
 
+    public void switchTileIsOccupied(int tileID) {
+        tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied = !tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied;
+    }
+
     private void resetLastPath() {
         while (savedNode != null) {
             tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
@@ -127,29 +131,24 @@ public class WorldController : MonoBehaviour {
 				else
 					tileArray [savedNode.getID ()].GetComponent<Tile> ().setCurrentState (Tile.TileState.NOT_SELECTED);
 				savedNode = savedNode.getPreviousNode ();
-			}
-				if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
-
-                break;
-            case CharacterController.CharacterState.ATTACK:
-                CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
-                int skillDamage = myCharacterController.getDamageFromCurrentSkill();
-                foreach (Transform enemy in enemies.transform) {
-                    int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
-                    Debug.Log(enemyPosition);
-                    for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+			}if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
+            break;
+         case CharacterController.CharacterState.ATTACK:
+            CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
+            int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+            foreach (Transform enemy in enemies.transform) {
+            int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
+                for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
 					if (tilesEffectedByPlayerSkill[i] == enemyPosition) { 
-                            int playerRole = myCharacterController.roleD20ForCurrentSkill();
-                            Debug.Log(playerRole + " " + enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus));
-                            if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
-                                enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
-                                Debug.Log("HIT: " + skillDamage + " ENEMY HEALTH: " + enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
-                            }
+                        int playerRole = myCharacterController.roleD20ForCurrentSkill();
+                        if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                            enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+                            Debug.Log("HIT: " + skillDamage + " ENEMY HEALTH: " + enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
                         }
                     }
                 }
-
-                break;
+            }
+            break;
         }
     }
 
