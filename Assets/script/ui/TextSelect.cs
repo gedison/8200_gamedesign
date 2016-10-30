@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class TextSelect : MonoBehaviour {
 
     public GameObject gameObjectWithHealth;
     private Text selectedText;
 
-    // Use this for initialization
     void Start () {
         selectedText = GetComponent<Text>();
 	}
@@ -16,7 +14,6 @@ public class TextSelect : MonoBehaviour {
         gameObjectWithHealth = gm;
     }
 	
-	// Update is called once per frame
 	void Update () {
         if (gameObjectWithHealth != null) {
             Health health = gameObjectWithHealth.GetComponent<Health>();

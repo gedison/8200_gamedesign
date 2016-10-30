@@ -30,6 +30,10 @@ public class Health : MonoBehaviour {
 
     void Update() {
         if (currentHealth == 0) {
+            int currentInstanceID = GetComponent<CharacterPosition>().getCurrentInstanceID();
+            WorldController.instance.switchTileIsOccupied(currentInstanceID);
+            WorldController.instance.updateTraversalMap(true);
+
             selectedText.GetComponent<TextSelect>().gameObjectWithHealth = null;
             Destroy(this.gameObject);
         }

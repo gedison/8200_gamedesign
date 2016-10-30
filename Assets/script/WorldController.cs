@@ -30,7 +30,6 @@ public class WorldController : MonoBehaviour {
     }
 		
     private void StartGame() {
-        //int[] weights = new int[tileHeight * tileWidth];
         tileArray = new Transform[tileHeight * tileWidth];
        
         int height = 0, width = 0;
@@ -38,7 +37,6 @@ public class WorldController : MonoBehaviour {
             width = 0;
             foreach(Transform tile in tileRow.transform) {
                 tileArray[(height * tileWidth) + width] = tile;
-                //weights[(height * tileWidth) + width] = tile.GetComponent<Tile>().getMovementModifier();
                 width++;
             }height++;  
         } tileTraverser = new DijkstraTileTraverser(tileArray, tileWidth, tileHeight, true);
@@ -154,6 +152,16 @@ public class WorldController : MonoBehaviour {
         }
     }
 
+    public void updateTraversalMap(bool npcDied) {
+        if (player != null) {
+            int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
+            if (currentID != lastID || npcDied) {
+                traversalMap = tileTraverser.getTileTrafersal(getTileIndexFromID(currentID));
+                lastID = currentID;
+            }
+        }  
+    }
+
     void Update() {
 		/* Check player */
 		switch (currentState) {
@@ -177,14 +185,8 @@ public class WorldController : MonoBehaviour {
 			break;
 		}
 
-		/* Go through all of the enemies */
-
-        int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
-        if (currentID != lastID) {
-            traversalMap = tileTraverser.getTileTrafersal(getTileIndexFromID(currentID));
-            lastID = currentID;
-        }
-
+        /* Go through all of the enemies */
+        updateTraversalMap(false);
     }
 }
 
