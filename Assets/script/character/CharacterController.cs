@@ -16,24 +16,14 @@ public class CharacterController : MonoBehaviour {
     public GameObject equipedWeapon;
     private Skill currentSkill;
 
+    public int visibilityRange = 5;
     public int totalActionPoints = 5;
     private int currentActionPoints;
 
-	private int prevTileID;
-
     private CharacterState currentCharacterState = CharacterState.MOVE;
-  
 
     public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
-    public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS };
-
-	int getPrevTile() {
-		return prevTileID;
-	}
-
-	void setPrevTile(int id) {
-		prevTileID = id;
-	}
+    public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS, HEALTH, NONE};
 
     void Start() {
         switch (professionString) {
@@ -41,24 +31,28 @@ public class CharacterController : MonoBehaviour {
             default: myProfession = new Warrior(); break;
         }
 
-
         myHealth = this.gameObject.AddComponent<Health>() as Health;
         myHealth.totalHealth = myProfession.getBaseHealth();
 
         currentActionPoints = totalActionPoints;
         //currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
         currentSkill = new BurstSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1);
-    
+    }
 
-}
+    public void startTurn() {
+        currentActionPoints = totalActionPoints;
+        currentCharacterState = CharacterState.MOVE;
+    }
 
     public void endTurn() {
-        currentActionPoints = totalActionPoints;
+        currentActionPoints = 0;
         currentCharacterState = CharacterState.IDLE;
     }
 
     public int roleD20UsingAttributeAsModifier(CharacterAttribute attribute) {
-        if (attribute == CharacterAttribute.ARMOR_CLASS) return getArmorClass();
+        if (attribute == CharacterAttribute.NONE) return 0;
+        else if (attribute == CharacterAttribute.HEALTH) return GetComponent<Health>().getCurrentHealth();
+        else if (attribute == CharacterAttribute.ARMOR_CLASS) return getArmorClass();
         else return d20.getDiceRoll() + getModifierOfAttribute(attribute);
     }
 
@@ -82,7 +76,7 @@ public class CharacterController : MonoBehaviour {
     public int[] getTilesEffectedByCurrentSkill(int tileIndex) {
         if (isTileWithinRangeOfCurrentSkill(tileIndex)) {
             int characterPosition = WorldController.instance.getTileIndexFromID(GetComponent<CharacterPosition>().getCurrentInstanceID());
-            return (int [])currentSkill.getTilesAffectedBySkillFromOrigin(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition).ToArray(typeof(int));
+            return (int[])currentSkill.getTilesAffectedBySkillFromOrigin(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition).ToArray(typeof(int));
         } else return new int[] { };
     }
 
@@ -100,6 +94,22 @@ public class CharacterController : MonoBehaviour {
 
     public CharacterState getCurrentCharacterState() {
         return currentCharacterState;
+    }
+
+    public int getCurrentActionPoints() {
+        return currentActionPoints;
+    }
+
+    public void decrementActionPointsByAttack() {
+        currentActionPoints -= 3;
+    }
+
+    public void decrementActionPointsByMovement() {
+        currentActionPoints -= 2;
+    }
+
+    public void decrementActionPointsByOne() {
+        currentActionPoints--;
     }
 
     void Update () {

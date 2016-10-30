@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class WorldController : MonoBehaviour {
 
-	public enum GameState { MOVE, ATTACK, IDLE, ENDED };
-	public GameState currentState = GameState.MOVE;
+	public enum GameState { IDLE, IN_COMBAT, ENDED };
+	public GameState currentState = GameState.IDLE;
 
     public static WorldController instance = null;
     public GameObject tiles;
@@ -22,6 +23,9 @@ public class WorldController : MonoBehaviour {
     private int lastID;
 
     private int[] tilesEffectedByPlayerSkill;
+
+    private int currentPlayerTurn = 0;
+    private ArrayList charactersInIntiative = new ArrayList();
 
     void Awake() {
         if (instance == null) instance = this;
@@ -56,7 +60,7 @@ public class WorldController : MonoBehaviour {
     }
 
     public Transform getTileFromArrayIndex(int tileID) {
-        Debug.Log(tileID);
+        //Debug.Log(tileID);
         return tileArray[tileID];
     }
 
@@ -67,9 +71,54 @@ public class WorldController : MonoBehaviour {
     }
 
     public void switchTileIsOccupied(int tileID) {
-        Debug.Log(tileID);
+        //Debug.Log(tileID);
         if(tileArray[getTileIndexFromID(tileID)] != null)
             tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied = !tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied;
+    }
+
+    private void addCharactersToIntiative() {
+        if (!charactersInIntiative.Contains(player)) charactersInIntiative.Add(player);
+
+        int playerX, playerY, enemyX, enemyY;
+        int playerVisibilityRange = player.GetComponent<CharacterController>().visibilityRange;
+        int playerOrigin = getTileIndexFromID(player.GetComponent<CharacterPosition>().getCurrentInstanceID());
+        playerX = playerOrigin % tileWidth;
+        playerY = playerOrigin / tileWidth;
+
+        foreach (Transform enemy in enemies.transform) {
+            int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
+            enemyX = enemyPosition % tileWidth;
+            enemyY = enemyPosition / tileWidth;
+
+            int distance = (int)Mathf.Sqrt(Mathf.Pow((playerX - enemyX), 2) + Mathf.Pow((playerY - enemyY), 2));
+            if (distance <= playerVisibilityRange && distance > 0) {
+                if (!charactersInIntiative.Contains(enemy.gameObject)) charactersInIntiative.Add(enemy.gameObject);
+                break;
+            }
+        }
+    }
+
+    private bool isPlayerWithinRangeOfEnemy() {
+        bool playerIsWithinRangeOfEnemy = false;
+        int playerX, playerY, enemyX, enemyY;
+
+        int playerVisibilityRange = player.GetComponent<CharacterController>().visibilityRange;
+        int playerOrigin = getTileIndexFromID(player.GetComponent<CharacterPosition>().getCurrentInstanceID());
+        playerX = playerOrigin % tileWidth;
+        playerY = playerOrigin / tileWidth;
+
+        foreach (Transform enemy in enemies.transform) {
+            int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
+            enemyX = enemyPosition % tileWidth;
+            enemyY = enemyPosition / tileWidth;
+
+            int distance = (int)Mathf.Sqrt(Mathf.Pow((playerX - enemyX), 2) + Mathf.Pow((playerY - enemyY), 2));
+            if (distance <= playerVisibilityRange && distance > 0) {
+                playerIsWithinRangeOfEnemy = true;
+                break;
+            }
+        }
+        return playerIsWithinRangeOfEnemy;
     }
 
     private void resetLastPath() {
@@ -86,6 +135,7 @@ public class WorldController : MonoBehaviour {
     }
 
     public void onTileHover(int tileID) {
+        if (currentPlayerTurn == 0 || currentState == GameState.IDLE) { 
         if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
         resetLastPath();
 
@@ -116,9 +166,11 @@ public class WorldController : MonoBehaviour {
 
                 break;
         }
+        }
     }
 
     public void onTileSelect(int tileID) {
+        if(currentPlayerTurn == 0 || currentState == GameState.IDLE) { 
         if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
         CharacterController myCharacterController = player.GetComponent<CharacterController>();
 
@@ -131,7 +183,10 @@ public class WorldController : MonoBehaviour {
 				else
 					tileArray [savedNode.getID ()].GetComponent<Tile> ().setCurrentState (Tile.TileState.NOT_SELECTED);
 				savedNode = savedNode.getPreviousNode ();
-			}if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
+			}
+            if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
+            if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
+
             break;
          case CharacterController.CharacterState.ATTACK:
             CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
@@ -143,12 +198,14 @@ public class WorldController : MonoBehaviour {
                         int playerRole = myCharacterController.roleD20ForCurrentSkill();
                         if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
                             enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
-                            Debug.Log("HIT: " + skillDamage + " ENEMY HEALTH: " + enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
+                            //Debug.Log("HIT: " + skillDamage + " ENEMY HEALTH: " + enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
                         }
                     }
                 }
             }
+            if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByAttack();
             break;
+        }
         }
     }
 
@@ -163,7 +220,57 @@ public class WorldController : MonoBehaviour {
     }
 
     void Update() {
-		/* Check player */
+        if(currentState == GameState.IDLE) {
+            Debug.Log("IDLE GAMESTATE");
+            if (isPlayerWithinRangeOfEnemy()) currentState = GameState.IN_COMBAT;
+        }else if(currentState == GameState.IN_COMBAT) {
+            Debug.Log("COMBAT STATE");
+            addCharactersToIntiative();
+
+            GameObject characterWhosTurnItIs = (GameObject)charactersInIntiative[currentPlayerTurn];
+            if (characterWhosTurnItIs == null) charactersInIntiative.Remove(characterWhosTurnItIs);
+            else {
+               
+                CharacterController myCharacterController = characterWhosTurnItIs.GetComponent<CharacterController>();
+                if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.IDLE) {
+                    myCharacterController.startTurn();
+                }
+
+
+                Debug.Log("PLAYER: " + characterWhosTurnItIs.name + " AP: " + myCharacterController.getCurrentActionPoints() + "/" + myCharacterController.totalActionPoints);
+
+                if (characterWhosTurnItIs != player) {
+                    myCharacterController.decrementActionPointsByOne();
+                }
+
+
+
+
+                //Check if turn is over
+                if (myCharacterController.getCurrentActionPoints() <= 0) {
+                    myCharacterController.endTurn();
+                    Debug.Log("PLAYER: " + characterWhosTurnItIs.name);
+                    currentPlayerTurn++;
+                    if (currentPlayerTurn >= charactersInIntiative.Count) currentPlayerTurn = 0;
+                }
+            }
+
+
+
+            
+            if(charactersInIntiative.Count == 1) {
+                if (charactersInIntiative.Contains(player)) {
+                    currentState = GameState.IDLE;
+                    changePlayerState();
+                }
+            }
+        }
+
+
+
+
+
+        /* Check player
 		switch (currentState) {
 		case GameState.MOVE: // ALlow the user to move
 			break;
@@ -183,9 +290,8 @@ public class WorldController : MonoBehaviour {
 			}
 			currentState = GameState.MOVE;
 			break;
-		}
+		} */
 
-        /* Go through all of the enemies */
         updateTraversalMap(false);
     }
 }
