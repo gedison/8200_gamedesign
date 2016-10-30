@@ -30,7 +30,7 @@ public class WorldController : MonoBehaviour {
     }
 		
     private void StartGame() {
-        int[] weights = new int[tileHeight * tileWidth];
+        //int[] weights = new int[tileHeight * tileWidth];
         tileArray = new Transform[tileHeight * tileWidth];
        
         int height = 0, width = 0;
@@ -38,10 +38,10 @@ public class WorldController : MonoBehaviour {
             width = 0;
             foreach(Transform tile in tileRow.transform) {
                 tileArray[(height * tileWidth) + width] = tile;
-                weights[(height * tileWidth) + width] = tile.GetComponent<Tile>().getMovementModifier();
+                //weights[(height * tileWidth) + width] = tile.GetComponent<Tile>().getMovementModifier();
                 width++;
             }height++;  
-        } tileTraverser = new DijkstraTileTraverser(weights, tileWidth, tileHeight, true);
+        } tileTraverser = new DijkstraTileTraverser(tileArray, tileWidth, tileHeight, true);
 
         changeStateButton.onClick.AddListener(changePlayerState);
     }
@@ -69,7 +69,9 @@ public class WorldController : MonoBehaviour {
     }
 
     public void switchTileIsOccupied(int tileID) {
-        tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied = !tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied;
+        Debug.Log(tileID);
+        if(tileArray[getTileIndexFromID(tileID)] != null)
+            tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied = !tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied;
     }
 
     private void resetLastPath() {

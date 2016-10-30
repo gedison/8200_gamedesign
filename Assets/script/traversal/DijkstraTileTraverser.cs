@@ -1,5 +1,7 @@
-﻿public class DijkstraTileTraverser : TileTraverser{
-    private int[] weights;
+﻿using UnityEngine;
+
+public class DijkstraTileTraverser : TileTraverser{
+    private Transform[] tiles;
     private int width, height;
     private bool isCartesian = false;
 
@@ -7,13 +9,13 @@
     private Direction[] omniDirectional = {Direction.TOP_LEFT, Direction.TOP, Direction.TOP_RIGHT, Direction.LEFT, Direction.RIGHT, Direction.BOTTOM_LEFT, Direction.BOTTOM, Direction.BOTTOM_RIGHT};
     private Direction[] cartesian = {Direction.TOP, Direction.LEFT, Direction.RIGHT, Direction.BOTTOM};
 
-    public DijkstraTileTraverser(int[] weights, int width, int height, bool isCartesian) {
+    public DijkstraTileTraverser(Transform[] tiles, int width, int height, bool isCartesian) {
         this.isCartesian = isCartesian;
-        setDimensions(weights, width, height);
+        setDimensions(tiles, width, height);
     }
 
-    public void setDimensions(int[] weights, int width, int height) {
-        this.weights = weights;
+    public void setDimensions(Transform[] tiles, int width, int height) {
+        this.tiles = tiles;
         this.width = width;
         this.height = height;
     }
@@ -28,7 +30,7 @@
 
     public Node[] getTileTrafersal(int start) {
         Node[] nodes = new Node[width * height];
-        for (int i = 0; i < (width * height); i++) nodes[i] = new Node(i, weights[i]);
+        for (int i = 0; i < (width * height); i++) nodes[i] = new Node(i, tiles[i].GetComponent<Tile>().getMovementModifier());
         nodes[start].setDistanceFromStart(0);
 
         int minIndex = getMinimumNodeIndex(nodes);
