@@ -12,12 +12,12 @@ public class WorldController : MonoBehaviour {
     public GameObject tiles;
     public GameObject player;
     public GameObject enemies;
+    public GameObject allCharacters;
 
     public Button changeStateButton;
 
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
-    private Node[] traversalMap;
     private Node savedNode = null;
     private TileTraverser tileTraverser = null;
     private int lastID;
@@ -46,6 +46,11 @@ public class WorldController : MonoBehaviour {
         } tileTraverser = new DijkstraTileTraverser(tileArray, tileWidth, tileHeight, true);
 
         changeStateButton.onClick.AddListener(changePlayerState);
+
+        charactersInIntiative.Add(player);
+
+
+
     }
 
     private void changePlayerState() {
@@ -71,7 +76,6 @@ public class WorldController : MonoBehaviour {
     }
 
     public void switchTileIsOccupied(int tileID) {
-        //Debug.Log(tileID);
         if(tileArray[getTileIndexFromID(tileID)] != null)
             tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied = !tileArray[getTileIndexFromID(tileID)].GetComponent<Tile>().tileIsOccupied;
     }
@@ -93,7 +97,6 @@ public class WorldController : MonoBehaviour {
             int distance = (int)Mathf.Sqrt(Mathf.Pow((playerX - enemyX), 2) + Mathf.Pow((playerY - enemyY), 2));
             if (distance <= playerVisibilityRange && distance > 0) {
                 if (!charactersInIntiative.Contains(enemy.gameObject)) charactersInIntiative.Add(enemy.gameObject);
-                break;
             }
         }
     }
@@ -135,88 +138,116 @@ public class WorldController : MonoBehaviour {
     }
 
     public void onTileHover(int tileID) {
-        if (currentPlayerTurn == 0 || currentState == GameState.IDLE) { 
-        if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        
+        GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
+        if(playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+
         resetLastPath();
 
-        CharacterController myCharacterController = player.GetComponent<CharacterController>();
+        CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
+        CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
+
         int index = getTileIndexFromID(tileID);
-     
+
         switch (myCharacterController.getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
-                if (index != -1) {
-                    if (traversalMap != null && traversalMap[index] != null) {
-                        Node selectedNode = traversalMap[index];
-                        savedNode = traversalMap[index];
-                        while (selectedNode != null) {
-                            int distanceFromStart = selectedNode.getDistanceFromStart();
-                            if (distanceFromStart < player.GetComponent<CharacterMovementController>().movementSpeed) tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
-                            else tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_OUTSIDE_RANGE);
-                            selectedNode = selectedNode.getPreviousNode();
-                        }
+                Node[] traversalMap = myCharacterMovementController.getTraversalMap();
+         
+                if (index != -1 && traversalMap != null && traversalMap[index] != null) {
+                    Node selectedNode = traversalMap[index];
+                    savedNode = traversalMap[index];
+                    while (selectedNode != null) {
+                        int distanceFromStart = selectedNode.getDistanceFromStart();
+                        if (distanceFromStart < myCharacterMovementController.movementSpeed) tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
+                        else tileArray[selectedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_OUTSIDE_RANGE);
+                        selectedNode = selectedNode.getPreviousNode();
                     }
-                }
+                }break;
 
-                break;
             case CharacterController.CharacterState.ATTACK:
                 tilesEffectedByPlayerSkill = myCharacterController.getTilesEffectedByCurrentSkill(index);
                 for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
                     tileArray[tilesEffectedByPlayerSkill[i]].GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
                 }
-
                 break;
-        }
         }
     }
 
     public void onTileSelect(int tileID) {
-        if(currentPlayerTurn == 0 || currentState == GameState.IDLE) { 
-        if (player.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
-        CharacterController myCharacterController = player.GetComponent<CharacterController>();
+        GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
+        if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+
+        CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
+        CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
 
         switch (myCharacterController.getCurrentCharacterState()) {
-		case CharacterController.CharacterState.MOVE:
-			List<Node> path = new List<Node> ();
-			while (savedNode != null) {
-				if (savedNode.getDistanceFromStart () < player.GetComponent<CharacterMovementController> ().movementSpeed)
-					path.Insert (0, savedNode);
-				else
-					tileArray [savedNode.getID ()].GetComponent<Tile> ().setCurrentState (Tile.TileState.NOT_SELECTED);
-				savedNode = savedNode.getPreviousNode ();
-			}
-            if (path.Count > 0) player.GetComponent<CharacterMovementController>().setPath(path);
-            if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
+            case CharacterController.CharacterState.MOVE:
+                List<Node> path = new List<Node>();
+                while (savedNode != null) {
+                    if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
+                        path.Insert(0, savedNode);
+                    else
+                        tileArray[savedNode.getID()].GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
+                    savedNode = savedNode.getPreviousNode();
+                }
 
-            break;
-         case CharacterController.CharacterState.ATTACK:
-            CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
-            int skillDamage = myCharacterController.getDamageFromCurrentSkill();
-            foreach (Transform enemy in enemies.transform) {
-            int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
-                for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
-					if (tilesEffectedByPlayerSkill[i] == enemyPosition) { 
-                        int playerRole = myCharacterController.roleD20ForCurrentSkill();
-                        if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
-                            enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
-                            //Debug.Log("HIT: " + skillDamage + " ENEMY HEALTH: " + enemy.GetComponent<CharacterController>().myHealth.getCurrentHealth());
+                if (path.Count > 0) {
+                    myCharacterMovementController.setPath(path);
+                    if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
+                }break;
+
+            case CharacterController.CharacterState.ATTACK:
+                CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
+                int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+                bool enemyHit = false;
+
+                if (playerWhosTurnItIs == player) {
+                    foreach (Transform enemy in enemies.transform) {
+                        int enemyPosition = getTileIndexFromID(enemy.GetComponent<CharacterPosition>().getCurrentInstanceID());
+                        for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                            if (tilesEffectedByPlayerSkill[i] == enemyPosition) {
+                                enemyHit = true;
+                                int playerRole = myCharacterController.roleD20ForCurrentSkill();
+                                if (enemy.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                                    enemy.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    int enemyPosition = getTileIndexFromID(player.GetComponent<CharacterPosition>().getCurrentInstanceID());
+                    for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                        if (tilesEffectedByPlayerSkill[i] == enemyPosition) {
+                            enemyHit = true;
+                            int playerRole = myCharacterController.roleD20ForCurrentSkill();
+                            if (player.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                                player.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+                            }
                         }
                     }
                 }
-            }
-            if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByAttack();
-            break;
-        }
+
+                if (currentState == GameState.IN_COMBAT && enemyHit) myCharacterController.decrementActionPointsByAttack();
+                break;
         }
     }
-
-    public void updateTraversalMap(bool npcDied) {
+  
+    public void updateTraversalMap(bool forceUpdate) {
         if (player != null) {
-            int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
-            if (currentID != lastID || npcDied) {
-                traversalMap = tileTraverser.getTileTrafersal(getTileIndexFromID(currentID));
-                lastID = currentID;
+            if (player.GetComponent<CharacterMovementController>().doesTraversalMapNeedToBeUpdated() || forceUpdate) {
+                int currentID = player.GetComponent<CharacterPosition>().getCurrentInstanceID();
+                player.GetComponent<CharacterMovementController>().setTraversalMap(tileTraverser.getTileTrafersal(getTileIndexFromID(currentID)));
             }
-        }  
+        }
+
+        foreach(Transform enemy in enemies.transform) {
+            if (enemy != null) {
+                if (enemy.GetComponent<CharacterMovementController>().doesTraversalMapNeedToBeUpdated() || forceUpdate) {
+                    int currentID = enemy.GetComponent<CharacterPosition>().getCurrentInstanceID();
+                    enemy.GetComponent<CharacterMovementController>().setTraversalMap(tileTraverser.getTileTrafersal(getTileIndexFromID(currentID)));
+                }
+            }
+        }
     }
 
     void Update() {
@@ -239,15 +270,8 @@ public class WorldController : MonoBehaviour {
 
                 Debug.Log("PLAYER: " + characterWhosTurnItIs.name + " AP: " + myCharacterController.getCurrentActionPoints() + "/" + myCharacterController.totalActionPoints);
 
-                if (characterWhosTurnItIs != player) {
-                    myCharacterController.decrementActionPointsByOne();
-                }
-
-
-
-
                 //Check if turn is over
-                if (myCharacterController.getCurrentActionPoints() <= 0) {
+                if (myCharacterController.getCurrentActionPoints() <= 0 && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
                     myCharacterController.endTurn();
                     Debug.Log("PLAYER: " + characterWhosTurnItIs.name);
                     currentPlayerTurn++;
@@ -255,42 +279,15 @@ public class WorldController : MonoBehaviour {
                 }
             }
 
-
-
-            
             if(charactersInIntiative.Count == 1) {
                 if (charactersInIntiative.Contains(player)) {
                     currentState = GameState.IDLE;
                     changePlayerState();
                 }
             }
+
+            updateTraversalMap(true);
         }
-
-
-
-
-
-        /* Check player
-		switch (currentState) {
-		case GameState.MOVE: // ALlow the user to move
-			break;
-		case GameState.ATTACK: // Attack/Skill state
-			// Allow them to use skills
-			// Allow them to click button to switch states
-			// ESC switches back to move
-			// Check action points
-			break;
-		case GameState.IDLE:
-			// Allow them to end their turn, otherwise do nothing
-			// Once they end turn, switch to ended.
-			break;
-		case GameState.ENDED:
-			foreach (Transform enemy in enemies.transform) {
-				//enemy.GetComponent<AI>.Run();
-			}
-			currentState = GameState.MOVE;
-			break;
-		} */
 
         updateTraversalMap(false);
     }

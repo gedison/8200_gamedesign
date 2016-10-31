@@ -6,6 +6,9 @@ public class CharacterMovementController : MonoBehaviour {
     public float animationSpeed = 3.0f;
     public float movementSpeed = 4;
 
+    private bool traversalMapNeedsToBeUpdated = true;
+    private Node[] traversalMap;
+
     private List<Node> path;
     private Transform currentTarget;
     private float playerHeight;
@@ -16,7 +19,8 @@ public class CharacterMovementController : MonoBehaviour {
     }
 
     void Update () {
-        if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {      
+        if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {
+            Debug.Log(this.name + " " + currentTarget);
             Vector3 target = currentTarget.position;
             target.y = playerHeight;
 
@@ -25,9 +29,21 @@ public class CharacterMovementController : MonoBehaviour {
         }
 	}
 
+    public bool doesTraversalMapNeedToBeUpdated() {
+        return traversalMapNeedsToBeUpdated;
+    }
+
+    public void setTraversalMap(Node[] traversalMap) {
+        traversalMapNeedsToBeUpdated = false;
+        this.traversalMap = traversalMap;
+    }
+
+    public Node[] getTraversalMap() {
+        return traversalMap;
+    }
+
     public void setPath(List<Node> path) {
         isMoving = true;
-
         this.path = path;
         currentTarget = WorldController.instance.getTileFromArrayIndex(path[0].getID());
         path.RemoveAt(0);
@@ -44,6 +60,7 @@ public class CharacterMovementController : MonoBehaviour {
                 currentTarget = WorldController.instance.getTileFromArrayIndex(path[0].getID());
                 path.RemoveAt(0);
             } else {
+                traversalMapNeedsToBeUpdated = true;
                 currentTarget = null;
                 isMoving = false;
             }

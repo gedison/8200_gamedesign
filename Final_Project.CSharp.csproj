@@ -68,6 +68,7 @@
     <Compile Include="Assets\script\character\CharacterController.cs" />
     <Compile Include="Assets\script\character\CharacterMovementController.cs" />
     <Compile Include="Assets\script\character\CharacterPosition.cs" />
+    <Compile Include="Assets\script\character\EnemyPrototype.cs" />
     <Compile Include="Assets\script\character\Health.cs" />
     <Compile Include="Assets\script\item\Armor.cs" />
     <Compile Include="Assets\script\item\Die.cs" />
