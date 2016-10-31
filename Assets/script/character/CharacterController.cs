@@ -45,6 +45,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     public void endTurn() {
+        Debug.Log("END");
         currentActionPoints = 0;
         currentCharacterState = CharacterState.IDLE;
     }
@@ -110,6 +111,10 @@ public class CharacterController : MonoBehaviour {
 
     public void decrementActionPointsByOne() {
         currentActionPoints--;
+    }
+
+    public void setActionPointsToZero() {
+        currentActionPoints = 0;
     }
 
     void Update () {

@@ -182,6 +182,7 @@ public class WorldController : MonoBehaviour {
 
         switch (myCharacterController.getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
+                if (myCharacterController.getCurrentActionPoints() < 2) return;
                 List<Node> path = new List<Node>();
                 while (savedNode != null) {
                     if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
@@ -197,6 +198,8 @@ public class WorldController : MonoBehaviour {
                 }break;
 
             case CharacterController.CharacterState.ATTACK:
+                if(myCharacterController.getCurrentActionPoints()<3)return;
+
                 CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
                 int skillDamage = myCharacterController.getDamageFromCurrentSkill();
                 bool enemyHit = false;

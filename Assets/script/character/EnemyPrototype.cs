@@ -11,9 +11,11 @@ public class EnemyPrototype : CharacterController {
             WorldController.instance.onTileHover(WorldController.instance.player.GetComponent<CharacterPosition>().getCurrentInstanceID());
             WorldController.instance.onTileSelect(WorldController.instance.player.GetComponent<CharacterPosition>().getCurrentInstanceID());
 
-            if (!this.GetComponent<CharacterMovementController>().isCharacterMoving()) this.endTurn();
+            if (getCurrentActionPoints() < 3) setCurrentCharacterState(CharacterState.ATTACK);
         }
-        
-	
-	}
+
+        this.setActionPointsToZero();
+
+
+    }
 }
