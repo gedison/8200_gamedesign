@@ -14,8 +14,6 @@ public class WorldController : MonoBehaviour {
     public GameObject enemies;
     public GameObject allCharacters;
 
-    public Button changeStateButton;
-
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
     private Node savedNode = null;
@@ -26,6 +24,8 @@ public class WorldController : MonoBehaviour {
 
     private int currentPlayerTurn = 0;
     private ArrayList charactersInIntiative = new ArrayList();
+
+    public bool onUI = false;
 
     void Awake() {
         if (instance == null) instance = this;
@@ -45,24 +45,9 @@ public class WorldController : MonoBehaviour {
             }height++;  
         } tileTraverser = new DijkstraTileTraverser(tileArray, tileWidth, tileHeight, true);
 
-        changeStateButton.onClick.AddListener(changePlayerState);
-
         charactersInIntiative.Add(player);
-
-
-
     }
 
-    private void changePlayerState() {
-        CharacterController myCharacterController = player.GetComponent<CharacterController>();
-        if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.ATTACK) {
-            myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.MOVE);
-            changeStateButton.GetComponentInChildren<Text>().text = "Switch to Attack";
-        } else {
-            myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.ATTACK);
-            changeStateButton.GetComponentInChildren<Text>().text = "Switch to Movement";
-        }
-    }
 
     public Transform getTileFromArrayIndex(int tileID) {
         //Debug.Log(tileID);
@@ -140,7 +125,9 @@ public class WorldController : MonoBehaviour {
     public void onTileHover(int tileID) {
         
         GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
-        if(playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (playerWhosTurnItIs == null) return;
+        if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (onUI && playerWhosTurnItIs == player) return;
 
         resetLastPath();
 
@@ -175,7 +162,9 @@ public class WorldController : MonoBehaviour {
 
     public void onTileSelect(int tileID) {
         GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
+        if (playerWhosTurnItIs == null) return;
         if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (onUI && playerWhosTurnItIs == player) return;
 
         CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
         CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
@@ -285,7 +274,6 @@ public class WorldController : MonoBehaviour {
             if(charactersInIntiative.Count == 1) {
                 if (charactersInIntiative.Contains(player)) {
                     currentState = GameState.IDLE;
-                    changePlayerState();
                 }
             }
 
