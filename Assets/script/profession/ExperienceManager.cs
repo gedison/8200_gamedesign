@@ -7,7 +7,7 @@ public class ExperienceManager : MonoBehaviour {
 	// Determine what level the character might be
 	public bool hasLeveledUp(int level, int experience) {
 		bool result = false;
-		for(int i = 0; i < experience.Length; ++i) {
+		for(int i = 0; i < experiences.Length; ++i) {
 			if (level == i && experience > experiences [i]) {
 				result = true;
 			}

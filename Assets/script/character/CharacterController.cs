@@ -25,9 +25,10 @@ public class CharacterController : MonoBehaviour {
     public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
     public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS, HEALTH, NONE};
 
-    void Start() {
+    public void Start() {
         switch (professionString) {
             case "Warrior": myProfession = new Warrior(); break;
+            case "Minion": myProfession = new Minion(); break;
             default: myProfession = new Warrior(); break;
         }
 
@@ -35,8 +36,8 @@ public class CharacterController : MonoBehaviour {
         myHealth.totalHealth = myProfession.getBaseHealth();
 
         currentActionPoints = totalActionPoints;
-        //currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
-        currentSkill = new BurstSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1);
+        currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
+        //currentSkill = new BurstSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1);
     }
 
     public void startTurn() {

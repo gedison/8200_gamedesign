@@ -125,23 +125,22 @@ public class WorldController : MonoBehaviour {
     }
 
     public void onTileHover(int tileID) {
-        
         GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
         if (playerWhosTurnItIs == null) return;
         if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
         if (onUI && playerWhosTurnItIs == player) return;
-
+    
         resetLastPath();
 
         CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
         CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
 
         int index = getTileIndexFromID(tileID);
-
+ 
         switch (myCharacterController.getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
                 Node[] traversalMap = myCharacterMovementController.getTraversalMap();
-         
+  
                 if (index != -1 && traversalMap != null && traversalMap[index] != null) {
                     Node selectedNode = traversalMap[index];
                     savedNode = traversalMap[index];
@@ -173,7 +172,7 @@ public class WorldController : MonoBehaviour {
 
         switch (myCharacterController.getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
-                if (myCharacterController.getCurrentActionPoints() < 2) return;
+                if (myCharacterController.getCurrentActionPoints() < 2 && currentState == GameState.IN_COMBAT) return;
                 List<Node> path = new List<Node>();
                 while (savedNode != null) {
                     if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
@@ -189,7 +188,7 @@ public class WorldController : MonoBehaviour {
                 }break;
 
             case CharacterController.CharacterState.ATTACK:
-                if(myCharacterController.getCurrentActionPoints()<3)return;
+                if(myCharacterController.getCurrentActionPoints()<3 && currentState == GameState.IN_COMBAT)return;
 
                 CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
                 int skillDamage = myCharacterController.getDamageFromCurrentSkill();
@@ -252,6 +251,7 @@ public class WorldController : MonoBehaviour {
             Debug.Log("COMBAT STATE");
             addCharactersToIntiative();
 
+            if (currentPlayerTurn >= charactersInIntiative.Count) currentPlayerTurn = 0;
             GameObject characterWhosTurnItIs = (GameObject)charactersInIntiative[currentPlayerTurn];
             if (characterWhosTurnItIs == null) charactersInIntiative.Remove(characterWhosTurnItIs);
             else {
@@ -267,15 +267,24 @@ public class WorldController : MonoBehaviour {
                 //Check if turn is over
                 if (myCharacterController.getCurrentActionPoints() <= 0 && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
                     myCharacterController.endTurn();
-                    Debug.Log("PLAYER: " + characterWhosTurnItIs.name);
+                    Debug.Log("PLAYER: " + characterWhosTurnItIs.name+" TURB OVER");
+                    for(int i=charactersInIntiative.Count-1; i>=0; i--) {
+                        if (charactersInIntiative[i] == null) charactersInIntiative.RemoveAt(i);
+                    }
+
                     currentPlayerTurn++;
                     if (currentPlayerTurn >= charactersInIntiative.Count) currentPlayerTurn = 0;
                 }
             }
 
+            Debug.Log("Characters in Initiative "+charactersInIntiative.Count);
             if(charactersInIntiative.Count == 1) {
+                Debug.Log("ONE LEFT");
                 if (charactersInIntiative.Contains(player)) {
+                    Debug.Log("Player Wins");
                     currentState = GameState.IDLE;
+                    CharacterController myCharacterController = player.GetComponent<CharacterController>();
+                    myCharacterController.startTurn();
                 }
             }
 

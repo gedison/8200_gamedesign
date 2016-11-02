@@ -74,6 +74,8 @@
     <Compile Include="Assets\script\item\Die.cs" />
     <Compile Include="Assets\script\item\Item.cs" />
     <Compile Include="Assets\script\item\Weapon.cs" />
+    <Compile Include="Assets\script\profession\ExperienceManager.cs" />
+    <Compile Include="Assets\script\profession\Minion.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
     <Compile Include="Assets\script\profession\Warrior.cs" />
     <Compile Include="Assets\script\skill\BlastSkill.cs" />
