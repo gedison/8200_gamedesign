@@ -27,6 +27,8 @@ public class WorldController : MonoBehaviour {
     private int currentPlayerTurn = 0;
     private ArrayList charactersInIntiative = new ArrayList();
 
+    public bool onUI = false;
+
     void Awake() {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(gameObject);
@@ -140,7 +142,9 @@ public class WorldController : MonoBehaviour {
     public void onTileHover(int tileID) {
         
         GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
-        if(playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (playerWhosTurnItIs == null) return;
+        if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (onUI && playerWhosTurnItIs == player) return;
 
         resetLastPath();
 
@@ -175,7 +179,9 @@ public class WorldController : MonoBehaviour {
 
     public void onTileSelect(int tileID) {
         GameObject playerWhosTurnItIs = (currentState == GameState.IN_COMBAT) ? (GameObject)charactersInIntiative[currentPlayerTurn] : player;
+        if (playerWhosTurnItIs == null) return;
         if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+        if (onUI && playerWhosTurnItIs == player) return;
 
         CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
         CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
