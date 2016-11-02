@@ -14,6 +14,8 @@ public class WorldController : MonoBehaviour {
     public GameObject enemies;
     public GameObject allCharacters;
 
+	public ExperienceManager xpManager;
+
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
     private Node savedNode = null;
