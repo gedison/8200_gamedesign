@@ -15,6 +15,7 @@ public class WorldController : MonoBehaviour {
     public GameObject allCharacters;
 
 	public ExperienceManager xpManager;
+	public QuestManager qManager;
 
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
