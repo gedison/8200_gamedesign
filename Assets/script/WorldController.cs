@@ -14,8 +14,6 @@ public class WorldController : MonoBehaviour {
     public GameObject enemies;
     public GameObject allCharacters;
 
-    public Button changeStateButton;
-
     public int tileWidth, tileHeight;
     private Transform[] tileArray;
     private Node savedNode = null;
@@ -47,24 +45,9 @@ public class WorldController : MonoBehaviour {
             }height++;  
         } tileTraverser = new DijkstraTileTraverser(tileArray, tileWidth, tileHeight, true);
 
-        changeStateButton.onClick.AddListener(changePlayerState);
-
         charactersInIntiative.Add(player);
-
-
-
     }
 
-    private void changePlayerState() {
-        CharacterController myCharacterController = player.GetComponent<CharacterController>();
-        if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.ATTACK) {
-            myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.MOVE);
-            changeStateButton.GetComponentInChildren<Text>().text = "Switch to Attack";
-        } else {
-            myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.ATTACK);
-            changeStateButton.GetComponentInChildren<Text>().text = "Switch to Movement";
-        }
-    }
 
     public Transform getTileFromArrayIndex(int tileID) {
         //Debug.Log(tileID);
@@ -291,7 +274,6 @@ public class WorldController : MonoBehaviour {
             if(charactersInIntiative.Count == 1) {
                 if (charactersInIntiative.Contains(player)) {
                     currentState = GameState.IDLE;
-                    changePlayerState();
                 }
             }
 

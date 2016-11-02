@@ -87,6 +87,7 @@
     <Compile Include="Assets\script\traversal\Node.cs" />
     <Compile Include="Assets\script\traversal\TileTraverser.cs" />
     <Compile Include="Assets\script\ui\EndTurn.cs" />
+    <Compile Include="Assets\script\ui\PlayerUI.cs" />
     <Compile Include="Assets\script\ui\TextSelect.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
   </ItemGroup>
