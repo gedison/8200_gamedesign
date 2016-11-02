@@ -30,11 +30,11 @@ public abstract class Tile : MonoBehaviour {
                     GetComponent<Renderer>().material.SetColor("_Color", defaultTileColor);
                     break;
                 case TileState.SELECTED_OUTSIDE_RANGE:
-                    GetComponent<Renderer>().material.shader = Shader.Find("Self-Illumin/Diffuse");
+                    //GetComponent<Renderer>().material.shader = Shader.Find("Self-Illumin/Diffuse");
                     GetComponent<Renderer>().material.SetColor("_Color", outsideOfRangeTileColor);
                     break;
                 case TileState.SELECTED_WITHIN_RANGE:
-                    GetComponent<Renderer>().material.shader = Shader.Find("Self-Illumin/Diffuse");
+                    //GetComponent<Renderer>().material.shader = Shader.Find("Self-Illumin/Diffuse");
                     GetComponent<Renderer>().material.SetColor("_Color", withinRangeTileColor);
                     break;
                 default:
