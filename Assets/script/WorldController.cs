@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public class WorldController : MonoBehaviour {
 
-	public enum GameState { IDLE, IN_COMBAT };
-	public GameState currentState = GameState.IDLE;
-
     public static WorldController instance = null;
+
+    public enum GameState { IDLE, IN_COMBAT };
+	public GameState currentState = GameState.IDLE;
+    
     public GameObject tiles;
     public GameObject player;
     public GameObject enemies;
@@ -44,12 +45,63 @@ public class WorldController : MonoBehaviour {
         if(myTileController!=null)myTileController.switchIsTileOccupied(tileID);
     }
 
+    private void haveCharacterPreformAttackOnTile(GameObject playerWhosTurnItIs, int tileID) {
+        CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
+
+        if (myCharacterController.getCurrentActionPoints() < 3 && currentState == GameState.IN_COMBAT) return;
+
+        CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
+        int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+        bool enemyHit = false;
+
+        int[] tilesEffectedByPlayerSkill = myTileController.getLastAttack();
+
+        foreach (GameObject character in allCharacters) {
+            if (character != null) {
+                int characterPosition = character.GetComponent<CharacterPosition>().getTileID();
+                for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                    if (tilesEffectedByPlayerSkill[i] == characterPosition) {
+                        enemyHit = true;
+                        int playerRole = myCharacterController.roleD20ForCurrentSkill();
+                        if (character != playerWhosTurnItIs && character.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                            character.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (currentState == GameState.IN_COMBAT && enemyHit) myCharacterController.decrementActionPointsByAttack();
+    }
+
+    private void moveCharacterToTile(GameObject playerWhosTurnItIs, int tileID) {
+        CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
+        CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
+
+        if (myCharacterController.getCurrentActionPoints() < 2 && currentState == GameState.IN_COMBAT) return;
+
+        List<Node> path = new List<Node>();
+        Node savedNode = myTileController.getLastTraversalPath();
+        while (savedNode != null) {
+            if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
+                path.Insert(0, savedNode);
+            else
+                myTileController.getTileFromID(savedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
+            savedNode = savedNode.getPreviousNode();
+        }
+
+        if (path.Count > 0) {
+            myCharacterMovementController.setPath(path);
+            if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
+        }
+    }
+
     public void onTileHover(int index) {
         GameObject playerWhosTurnItIs = (currentState != GameState.IN_COMBAT) ? player : myInitativeController.getPlayerWhosTurnItIs();
-        if (playerWhosTurnItIs == null) return;
-        if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+
+        if (playerWhosTurnItIs == null || playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
         if (onUI && playerWhosTurnItIs == player) return;
-    
+
         switch (playerWhosTurnItIs.GetComponent<CharacterController>().getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
                 myTileController.highlightTraversalPathFromCharacterToTile(playerWhosTurnItIs, index);
@@ -63,57 +115,17 @@ public class WorldController : MonoBehaviour {
 
     public void onTileSelect(int tileID) {
         GameObject playerWhosTurnItIs = (currentState != GameState.IN_COMBAT) ? player : myInitativeController.getPlayerWhosTurnItIs();
-        if (playerWhosTurnItIs == null) return;
-        if (playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
+
+        if (playerWhosTurnItIs == null || playerWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) return;
         if (onUI && playerWhosTurnItIs == player) return;
 
-        CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
-        CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
-
-        switch (myCharacterController.getCurrentCharacterState()) {
+        switch (playerWhosTurnItIs.GetComponent<CharacterController>().getCurrentCharacterState()) {
             case CharacterController.CharacterState.MOVE:
-                if (myCharacterController.getCurrentActionPoints() < 2 && currentState == GameState.IN_COMBAT) return;
-                List<Node> path = new List<Node>();
-                Node savedNode = myTileController.getLastTraversalPath();
-                while (savedNode != null) {
-                    if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
-                        path.Insert(0, savedNode);
-                    else
-                        myTileController.getTileFromID(savedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
-                    savedNode = savedNode.getPreviousNode();
-                }
-
-                if (path.Count > 0) {
-                    myCharacterMovementController.setPath(path);
-                    if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
-                }
+                moveCharacterToTile(playerWhosTurnItIs, tileID);
                 break;
 
             case CharacterController.CharacterState.ATTACK:
-                if(myCharacterController.getCurrentActionPoints()<3 && currentState == GameState.IN_COMBAT)return;
-
-                CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
-                int skillDamage = myCharacterController.getDamageFromCurrentSkill();
-                bool enemyHit = false;
-
-                int[] tilesEffectedByPlayerSkill = myTileController.getLastAttack();
-
-                foreach(GameObject character in allCharacters) {
-                    if (character != null) { 
-                        int characterPosition = character.GetComponent<CharacterPosition>().getTileID();
-                        for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
-                            if (tilesEffectedByPlayerSkill[i] == characterPosition) {
-                                enemyHit = true;
-                                int playerRole = myCharacterController.roleD20ForCurrentSkill();
-                                if (character != playerWhosTurnItIs && character.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
-                                    character.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (currentState == GameState.IN_COMBAT && enemyHit) myCharacterController.decrementActionPointsByAttack();
+                haveCharacterPreformAttackOnTile(playerWhosTurnItIs, tileID);
                 break;
         }
     }
@@ -125,18 +137,18 @@ public class WorldController : MonoBehaviour {
         }
     }
 
+    private void setAllCharacterStatesToX(CharacterController.CharacterState newCharacterState) {
+        foreach (GameObject character in allCharacters) {
+            if (character != null) character.GetComponent<CharacterController>().setCurrentCharacterState(newCharacterState);
+        }
+    }
+
     void Update() {
         if(currentState == GameState.IDLE) {
             Debug.Log("IDLE GAMESTATE");
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 currentState = GameState.IN_COMBAT;
-                player.GetComponent<CharacterController>().setCurrentCharacterState(CharacterController.CharacterState.IDLE);
-
-                foreach (GameObject character in allCharacters) {
-                    if (character != null) character.GetComponent<CharacterController>().setCurrentCharacterState(CharacterController.CharacterState.IDLE);
-                }
-
-
+                setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
         }else if(currentState == GameState.IN_COMBAT) {
             Debug.Log("COMBAT STATE");
@@ -156,9 +168,7 @@ public class WorldController : MonoBehaviour {
             }
 
             //Player Won Encounter
-            Debug.Log("Encounter: " + myInitativeController.getNumberOfPlayersInIntiative());
             if (myInitativeController.getNumberOfPlayersInIntiative() == 1) {
-                
                 if (player != null) {
                     currentState = GameState.IDLE;
                     CharacterController myCharacterController = player.GetComponent<CharacterController>();
@@ -169,9 +179,7 @@ public class WorldController : MonoBehaviour {
             //Player Lost Encounter
             if(player== null) {
                 currentState = GameState.IDLE;
-                foreach (Transform enemy in enemies.transform) {
-                    if (enemy != null) enemy.GetComponent<CharacterController>().setCurrentCharacterState(CharacterController.CharacterState.IDLE);
-                }
+                setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
 
             updateTraversalMap(true);
