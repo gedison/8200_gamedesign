@@ -3,26 +3,29 @@ using System.Collections;
 
 public class CharacterPosition : MonoBehaviour {
 
-    private int currentInstanceID = 0;
+    private int currentTileID = 0;
+
 
     void Update() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit)) {
-            int temp = hit.transform.GetInstanceID();
-            if (temp != currentInstanceID) {
-                if (currentInstanceID == 0) {
-                    currentInstanceID = temp;
-                    WorldController.instance.switchTileIsOccupied(currentInstanceID);
+            GameObject tile = hit.transform.gameObject;
+            int temp = tile.GetComponent<Tile>().getTileID();
+            if (temp != currentTileID) {
+                if (currentTileID == 0) {
+                    currentTileID = temp;
+                    WorldController.instance.switchTileIsOccupied(currentTileID);
                 } else {
-                    WorldController.instance.switchTileIsOccupied(currentInstanceID);
-                    currentInstanceID = temp;
-                    WorldController.instance.switchTileIsOccupied(currentInstanceID);
+
+                    WorldController.instance.switchTileIsOccupied(currentTileID);
+                    currentTileID = temp;
+                    WorldController.instance.switchTileIsOccupied(currentTileID);
                 }              
             }
         }
     }
 
-    public int getCurrentInstanceID() {
-        return currentInstanceID;
+    public int getTileID() {
+        return currentTileID;
     }
 }

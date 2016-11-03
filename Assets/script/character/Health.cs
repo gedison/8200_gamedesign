@@ -30,7 +30,7 @@ public class Health : MonoBehaviour {
 
     void Update() {
         if (currentHealth == 0) {
-            int currentInstanceID = GetComponent<CharacterPosition>().getCurrentInstanceID();
+            int currentInstanceID = GetComponent<CharacterPosition>().getTileID();
             WorldController.instance.switchTileIsOccupied(currentInstanceID);
             WorldController.instance.updateTraversalMap(true);
 

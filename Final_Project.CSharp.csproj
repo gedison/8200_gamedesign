@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\script\InitativeController.cs" />
+    <Compile Include="Assets\script\TileController.cs" />
     <Compile Include="Assets\script\WorldController.cs" />
     <Compile Include="Assets\script\camera\SecondPersonCamera.cs" />
     <Compile Include="Assets\script\character\CharacterController.cs" />
@@ -78,6 +80,10 @@
     <Compile Include="Assets\script\profession\Minion.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
     <Compile Include="Assets\script\profession\Warrior.cs" />
+    <Compile Include="Assets\script\quest\QuestManager.cs" />
+    <Compile Include="Assets\script\quest\QuestTemplate.cs" />
+    <Compile Include="Assets\script\quest\TriggerTemplate.cs" />
+    <Compile Include="Assets\script\quest\availableQuests\KillEnemiesStage1.cs" />
     <Compile Include="Assets\script\skill\BlastSkill.cs" />
     <Compile Include="Assets\script\skill\BurstSkill.cs" />
     <Compile Include="Assets\script\skill\Skill.cs" />

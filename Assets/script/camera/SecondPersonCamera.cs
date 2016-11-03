@@ -13,6 +13,7 @@ public class SecondPersonCamera : MonoBehaviour {
     }
 
     void LateUpdate() {
-        transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
+        if(player!=null)
+            transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
     }
 }

@@ -34,12 +34,11 @@ public class PlayerUI : MonoBehaviour {
     }
 
     private void endPlayerTurn() {
-        if(player != null) myCharacterController.setActionPointsToZero();
+        if (player != null) myCharacterController.endTurn();
     }
 	
-	// Update is called once per frame
 	void Update () {
-        if (myCharacterHealth == null) {
+        if (myCharacterHealth == null && player !=null) {
             myCharacterHealth = player.GetComponent<Health>(); 
         }
         if (player != null) { 

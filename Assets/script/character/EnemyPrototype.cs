@@ -11,26 +11,29 @@ public class EnemyPrototype : CharacterController {
 	void Update () {
 
 		WorldController ctrl = WorldController.instance;
-        int playerTileInstanceID = ctrl.player.GetComponent<CharacterPosition>().getCurrentInstanceID();
-        int playerTile = ctrl.getTileIndexFromID(playerTileInstanceID);
-
+   
+ 
         if (this.getCurrentCharacterState() == CharacterState.MOVE) {
+            int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();
+
             if (isTileWithinRangeOfCurrentSkill(playerTile)) {
                 Debug.Log("NPC IN RANGE: SWITCH TO ATTACK");
                 setCurrentCharacterState(CharacterState.ATTACK);
             } else {
                 Debug.Log("NPC OUT OF RANGE MOVE");
-                ctrl.onTileHover(playerTileInstanceID);
-                ctrl.onTileSelect(playerTileInstanceID);
+                ctrl.onTileHover(playerTile);
+                ctrl.onTileSelect(playerTile);
             }
 
-            if (getCurrentActionPoints() < 2) setActionPointsToZero();
+            if (getCurrentActionPoints() < 2) endTurn();
         }else if(this.getCurrentCharacterState() == CharacterState.ATTACK) {
-            Debug.Log("NPC ATTACK");
-            ctrl.onTileHover(playerTileInstanceID);
-            ctrl.onTileSelect(playerTileInstanceID);
+            int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();
 
-            if (getCurrentActionPoints() < 3) setActionPointsToZero();
+            Debug.Log("NPC ATTACK");
+            ctrl.onTileHover(playerTile);
+            ctrl.onTileSelect(playerTile);
+
+            if (getCurrentActionPoints() < 3) endTurn();
         }
 	}
 }

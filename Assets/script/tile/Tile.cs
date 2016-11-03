@@ -2,24 +2,33 @@
 
 public abstract class Tile : MonoBehaviour {
 
-    //public Texture tileTexture;
+    
     public bool tileIsOccupied = false;
     public Color withinRangeTileColor = new Color(1, 1, .45f);
     public Color outsideOfRangeTileColor = new Color(1, 0, 0);
     private Color defaultTileColor = new Color(1, 1, 1);
     public enum TileState {SELECTED_WITHIN_RANGE, SELECTED_OUTSIDE_RANGE, NOT_SELECTED};
     private TileState currentState = TileState.NOT_SELECTED, lastState = TileState.NOT_SELECTED;
+    private int tileID;
+
+    public void setTileID(int tileID) {
+        this.tileID = tileID;
+    }
+
+    public int getTileID() {
+        return tileID;
+    }
 
     void OnMouseEnter() {
-        WorldController.instance.onTileHover(GetComponent<Transform>().GetInstanceID());
+        WorldController.instance.onTileHover(tileID);
     }
 
     void OnMouseOver() {
-        if(currentState == TileState.NOT_SELECTED) WorldController.instance.onTileHover(GetComponent<Transform>().GetInstanceID());
+        if(currentState == TileState.NOT_SELECTED) WorldController.instance.onTileHover(tileID);
     }
 
     void OnMouseDown() {
-        WorldController.instance.onTileSelect(GetComponent<Transform>().GetInstanceID());
+        WorldController.instance.onTileSelect(tileID);
     }
 
     void Update() {
@@ -47,6 +56,10 @@ public abstract class Tile : MonoBehaviour {
 
     public void setCurrentState(TileState newState) {
         currentState = newState;
+    }
+
+    public void switchTileIsOccupied() {
+        tileIsOccupied = !tileIsOccupied;
     }
 
     public abstract int getMovementModifier();

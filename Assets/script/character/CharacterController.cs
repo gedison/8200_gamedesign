@@ -22,7 +22,7 @@ public class CharacterController : MonoBehaviour {
 
     private CharacterState currentCharacterState = CharacterState.MOVE;
 
-    public enum CharacterState { MOVE, ATTACK, IDLE, NOT_IN_COMBAT, DEAD };
+    public enum CharacterState { MOVE, ATTACK, IDLE, TURN_OVER};
     public enum CharacterAttribute { STRENGTH, DEXTERITY, INTELLIGENCE, WISDOM, ARMOR_CLASS, HEALTH, NONE};
 
     public void Start() {
@@ -37,7 +37,6 @@ public class CharacterController : MonoBehaviour {
 
         currentActionPoints = totalActionPoints;
         currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
-        //currentSkill = new BurstSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1);
     }
 
     public void startTurn() {
@@ -46,9 +45,8 @@ public class CharacterController : MonoBehaviour {
     }
 
     public void endTurn() {
-        Debug.Log("END");
         currentActionPoints = 0;
-        currentCharacterState = CharacterState.IDLE;
+        currentCharacterState = CharacterState.TURN_OVER;
     }
 
     public int roleD20UsingAttributeAsModifier(CharacterAttribute attribute) {
@@ -71,13 +69,13 @@ public class CharacterController : MonoBehaviour {
     }
 
     public bool isTileWithinRangeOfCurrentSkill(int tileIndex) {
-        int characterPosition = WorldController.instance.getTileIndexFromID(GetComponent<CharacterPosition>().getCurrentInstanceID());
+        int characterPosition = GetComponent<CharacterPosition>().getTileID();
         return currentSkill.isTileWithinRangeOfSkill(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition);
     }
 
     public int[] getTilesEffectedByCurrentSkill(int tileIndex) {
         if (isTileWithinRangeOfCurrentSkill(tileIndex)) {
-            int characterPosition = WorldController.instance.getTileIndexFromID(GetComponent<CharacterPosition>().getCurrentInstanceID());
+            int characterPosition = GetComponent<CharacterPosition>().getTileID();
             return (int[])currentSkill.getTilesAffectedBySkillFromOrigin(WorldController.instance.tileWidth, WorldController.instance.tileHeight, tileIndex, characterPosition).ToArray(typeof(int));
         } else return new int[] { };
     }
