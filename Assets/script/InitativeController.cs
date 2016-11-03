@@ -49,7 +49,9 @@ public class InitativeController {
 
     private void removeAllNullPlayers() {
         for(int i = charactersInIntiative.Count-1; i>=0; i--) {
-            if (charactersInIntiative[i] == null) charactersInIntiative.RemoveAt(i);
+            if (((GameObject)charactersInIntiative[i]) == null) {
+                charactersInIntiative.RemoveAt(i);
+            }
         }
     }
 
@@ -65,6 +67,7 @@ public class InitativeController {
     }
 
     public int getNumberOfPlayersInIntiative() {
+        Debug.Log("Initiative: " + charactersInIntiative.Count);
         return charactersInIntiative.Count;
     }
 

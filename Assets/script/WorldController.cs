@@ -131,6 +131,12 @@ public class WorldController : MonoBehaviour {
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 currentState = GameState.IN_COMBAT;
                 player.GetComponent<CharacterController>().setCurrentCharacterState(CharacterController.CharacterState.IDLE);
+
+                foreach (GameObject character in allCharacters) {
+                    if (character != null) character.GetComponent<CharacterController>().setCurrentCharacterState(CharacterController.CharacterState.IDLE);
+                }
+
+
             }
         }else if(currentState == GameState.IN_COMBAT) {
             Debug.Log("COMBAT STATE");
@@ -150,7 +156,9 @@ public class WorldController : MonoBehaviour {
             }
 
             //Player Won Encounter
-            if(myInitativeController.getNumberOfPlayersInIntiative() == 1) {
+            Debug.Log("Encounter: " + myInitativeController.getNumberOfPlayersInIntiative());
+            if (myInitativeController.getNumberOfPlayersInIntiative() == 1) {
+                
                 if (player != null) {
                     currentState = GameState.IDLE;
                     CharacterController myCharacterController = player.GetComponent<CharacterController>();
