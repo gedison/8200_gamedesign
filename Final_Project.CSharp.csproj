@@ -94,10 +94,12 @@
     <Compile Include="Assets\script\traversal\DijkstraTileTraverser.cs" />
     <Compile Include="Assets\script\traversal\Node.cs" />
     <Compile Include="Assets\script\traversal\TileTraverser.cs" />
+    <Compile Include="Assets\script\ui\CharacterUIController.cs" />
     <Compile Include="Assets\script\ui\EndTurn.cs" />
     <Compile Include="Assets\script\ui\PlayerUI.cs" />
     <Compile Include="Assets\script\ui\TextSelect.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
+    <Compile Include="Assets\script\ui_element\UICircle2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
