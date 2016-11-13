@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour {
 
-    public Text playerHealth;
-    public Text playerAP;
-
     public Button switchToAttack;
     public Button switchToMovement;
     public Button endTurn;
@@ -35,15 +32,5 @@ public class PlayerUI : MonoBehaviour {
 
     private void endPlayerTurn() {
         if (player != null) myCharacterController.endTurn();
-    }
-	
-	void Update () {
-        if (myCharacterHealth == null && player !=null) {
-            myCharacterHealth = player.GetComponent<Health>(); 
-        }
-        if (player != null) { 
-            if(myCharacterHealth!=null)playerHealth.text = "Health "+myCharacterHealth.getCurrentHealth() + "/" + myCharacterHealth.totalHealth;
-            playerAP.text = "AP "+myCharacterController.getCurrentActionPoints() + "/" + myCharacterController.totalActionPoints;
-        }
     }
 }

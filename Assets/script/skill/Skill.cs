@@ -5,7 +5,8 @@ public abstract class Skill {
     private CharacterController.CharacterAttribute skillAttribute, skillVersus;
     private string skillName, skillDescription;
     private int numberOfDice, numberOfSidesOnDie;
-    private Die myDie; 
+    private Die myDie;
+    private Condition conditionToBeApplied = null;
 
     public Skill(string skillName, string skillDescription, CharacterController.CharacterAttribute attribute, CharacterController.CharacterAttribute versus, int numberOfDice, int numberOfSidesOnDie) {
         this.skillName = skillName;
@@ -16,6 +17,14 @@ public abstract class Skill {
         skillVersus = versus;
 
         myDie = new Die(numberOfSidesOnDie);
+    }
+
+    public void setCondition(Condition condition) {
+        conditionToBeApplied = condition;
+    }
+
+    public Condition getCondition() {
+        return conditionToBeApplied;
     }
 
     public string getSkillName() {

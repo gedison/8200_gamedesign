@@ -51,7 +51,7 @@ public class WorldController : MonoBehaviour {
         if (myCharacterController.getCurrentActionPoints() < 3 && currentState == GameState.IN_COMBAT) return;
 
         CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
-        int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+       
         bool enemyHit = false;
 
         int[] tilesEffectedByPlayerSkill = myTileController.getLastAttack();
@@ -64,7 +64,16 @@ public class WorldController : MonoBehaviour {
                         enemyHit = true;
                         int playerRole = myCharacterController.roleD20ForCurrentSkill();
                         if (character != playerWhosTurnItIs && character.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                            int skillDamage = myCharacterController.getDamageFromCurrentSkill();
                             character.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+
+                            Condition conditionToApply = myCharacterController.getConditionFromCurrentSkill();
+
+                            if(conditionToApply!=null && character.GetComponent<Condition>() == null) {
+                                switch (conditionToApply.getName()) {
+                                    case "Dazed":character.AddComponent<Dazed>();break;
+                                }
+                            }
                         }
                     }
                 }
@@ -146,6 +155,9 @@ public class WorldController : MonoBehaviour {
     void Update() {
         if(currentState == GameState.IDLE) {
             Debug.Log("IDLE GAMESTATE");
+
+            if (player != null)player.GetComponent<CharacterController>().startTurn();
+            
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 currentState = GameState.IN_COMBAT;
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);

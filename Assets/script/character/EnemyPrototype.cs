@@ -13,6 +13,12 @@ public class EnemyPrototype : CharacterController {
    
  
         if (this.getCurrentCharacterState() == CharacterState.MOVE) {
+
+            if (this.GetComponent<Condition>() != null) {
+                Condition currentCondition = this.GetComponent<Condition>();
+                currentCondition.doConditionActionOnSelf();
+            }
+
             int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();
 
             if (isTileWithinRangeOfCurrentSkill(playerTile)) {

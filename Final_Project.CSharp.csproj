@@ -86,6 +86,8 @@
     <Compile Include="Assets\script\quest\availableQuests\KillEnemiesStage1.cs" />
     <Compile Include="Assets\script\skill\BlastSkill.cs" />
     <Compile Include="Assets\script\skill\BurstSkill.cs" />
+    <Compile Include="Assets\script\skill\Condition\Condition.cs" />
+    <Compile Include="Assets\script\skill\Condition\Dazed.cs" />
     <Compile Include="Assets\script\skill\Skill.cs" />
     <Compile Include="Assets\script\tile\Difficult.cs" />
     <Compile Include="Assets\script\tile\NoMovement.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Assets\script\traversal\Node.cs" />
     <Compile Include="Assets\script\traversal\TileTraverser.cs" />
     <Compile Include="Assets\script\ui\CharacterUIController.cs" />
+    <Compile Include="Assets\script\ui\CombatUIController.cs" />
     <Compile Include="Assets\script\ui\EndTurn.cs" />
     <Compile Include="Assets\script\ui\PlayerUI.cs" />
     <Compile Include="Assets\script\ui\TextSelect.cs" />

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
+
 [ExecuteInEditMode]
 public class UICircle2 : Graphic {
     [SerializeField]
@@ -37,8 +37,13 @@ public class UICircle2 : Graphic {
     void Update() {
         this.thikness = (int)Mathf.Clamp(this.thikness, 0, rectTransform.rect.width / 2);
 
-        if(newPercent != fillPercent) {
+        if(newPercent != fillPercent && newPercent<fillPercent) {
             fillPercent = ((int)(fillPercent - percentToRemovePerFrame * Time.deltaTime) >= newPercent) ? (int)(fillPercent - percentToRemovePerFrame * Time.deltaTime) : newPercent;
+            SetAllDirty();
+        }
+
+        if (newPercent != fillPercent && newPercent > fillPercent) {
+            fillPercent = ((int)(fillPercent + 200 * Time.deltaTime) <= newPercent) ? (int)(fillPercent + 200 * Time.deltaTime) : newPercent;
             SetAllDirty();
         }
     }

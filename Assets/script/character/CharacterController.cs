@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 
 public class CharacterController : MonoBehaviour {
@@ -15,6 +16,7 @@ public class CharacterController : MonoBehaviour {
     public GameObject equipedArmor;
     public GameObject equipedWeapon;
     private Skill currentSkill;
+    private ArrayList characterSkills = new ArrayList();
 
     public int visibilityRange = 5;
     public int totalActionPoints = 5;
@@ -36,7 +38,25 @@ public class CharacterController : MonoBehaviour {
         myHealth.totalHealth = myProfession.getBaseHealth();
 
         currentActionPoints = totalActionPoints;
-        currentSkill = new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1);
+
+        switch (professionString) {
+            case "Warrior":
+                characterSkills.Add(new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 2, 3, 1, 1));
+                characterSkills.Add(new BurstSkill("Area Attack", "Attack all enemies in a one burst radius", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 2, 1));
+                BlastSkill temp = new BlastSkill("Daze Enemy", "Dazes one enemy within a one square radius", CharacterAttribute.STRENGTH, CharacterAttribute.DEXTERITY, 1, 3, 1, 1);
+                temp.setCondition(new Dazed());
+                characterSkills.Add(temp);
+               
+
+                currentSkill = (Skill)characterSkills[2];
+                break;
+
+            case "Minion":
+                characterSkills.Add(new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1));
+                currentSkill = (Skill)characterSkills[0];
+                break;
+        }
+       
     }
 
     public void startTurn() {
@@ -84,6 +104,10 @@ public class CharacterController : MonoBehaviour {
         return equipedWeapon.GetComponent<Weapon>().getAttackDamage() + currentSkill.getAttackDamage();
     }
 
+    public Condition getConditionFromCurrentSkill() {
+        return currentSkill.getCondition();
+    }
+
     public CharacterAttribute getCurrentSkillVersus() {
         return currentSkill.getSkillVersus();
     }
@@ -115,6 +139,19 @@ public class CharacterController : MonoBehaviour {
     public void setActionPointsToZero() {
         currentActionPoints = 0;
     }
+
+    public void setSkillAtIndexToActive(int index) {
+        if(index >= 0 && index < characterSkills.Count) {
+            currentSkill = (Skill) characterSkills[index];
+        }
+    }
+
+    public Skill getSkillAtIndex(int index) {
+        if (index >= 0 && index < characterSkills.Count) {
+            return (Skill)characterSkills[index];
+        } else return null;
+    }
+
 
     void Update () {
 
