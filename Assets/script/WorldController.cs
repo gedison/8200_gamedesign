@@ -80,7 +80,10 @@ public class WorldController : MonoBehaviour {
             }
         }
 
-        if (currentState == GameState.IN_COMBAT && enemyHit) myCharacterController.decrementActionPointsByAttack();
+        if (currentState == GameState.IN_COMBAT && enemyHit) {
+            myCharacterController.decrementActionPointsByAttack();
+            myCharacterController.incrementSkillUsage();
+        }
     }
 
     private void moveCharacterToTile(GameObject playerWhosTurnItIs, int tileID) {
@@ -184,6 +187,7 @@ public class WorldController : MonoBehaviour {
                 if (player != null) {
                     currentState = GameState.IDLE;
                     CharacterController myCharacterController = player.GetComponent<CharacterController>();
+                    myCharacterController.resetSkillsPerEncounter();
                     myCharacterController.startTurn();
                 }
             }

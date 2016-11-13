@@ -7,6 +7,8 @@ public abstract class Skill {
     private int numberOfDice, numberOfSidesOnDie;
     private Die myDie;
     private Condition conditionToBeApplied = null;
+    private int usesPerEncounter = 0;
+    private int timesUsed = 0;
 
     public Skill(string skillName, string skillDescription, CharacterController.CharacterAttribute attribute, CharacterController.CharacterAttribute versus, int numberOfDice, int numberOfSidesOnDie) {
         this.skillName = skillName;
@@ -17,6 +19,28 @@ public abstract class Skill {
         skillVersus = versus;
 
         myDie = new Die(numberOfSidesOnDie);
+    }
+
+    public void setUsesPerEncounter(int usesPerEncounter) {
+        this.usesPerEncounter = usesPerEncounter;
+    }
+
+    public int getNumberOfTimesUsesInEncounter() {
+        if (usesPerEncounter == 0) return 0;
+        else return timesUsed;
+    }
+
+    public void incrementTimesUsed() {
+        timesUsed++;
+    }
+
+    public void resetTimesUsed() {
+        timesUsed = 0;
+    }
+
+    public bool hasSkillBeenUsedUpForEncounter() {
+        if (usesPerEncounter == 0 || usesPerEncounter > timesUsed) return false;
+        else return true;
     }
 
     public void setCondition(Condition condition) {

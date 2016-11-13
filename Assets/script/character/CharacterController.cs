@@ -45,6 +45,7 @@ public class CharacterController : MonoBehaviour {
                 characterSkills.Add(new BurstSkill("Area Attack", "Attack all enemies in a one burst radius", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 2, 1));
                 BlastSkill temp = new BlastSkill("Daze Enemy", "Dazes one enemy within a one square radius", CharacterAttribute.STRENGTH, CharacterAttribute.DEXTERITY, 1, 3, 1, 1);
                 temp.setCondition(new Dazed());
+                temp.setUsesPerEncounter(1);
                 characterSkills.Add(temp);
                
 
@@ -142,7 +143,10 @@ public class CharacterController : MonoBehaviour {
 
     public void setSkillAtIndexToActive(int index) {
         if(index >= 0 && index < characterSkills.Count) {
-            currentSkill = (Skill) characterSkills[index];
+            if (((Skill)characterSkills[index]).hasSkillBeenUsedUpForEncounter()!=true) {
+                currentSkill = (Skill)characterSkills[index];
+                setCurrentCharacterState(CharacterController.CharacterState.ATTACK);
+            }
         }
     }
 
@@ -150,6 +154,16 @@ public class CharacterController : MonoBehaviour {
         if (index >= 0 && index < characterSkills.Count) {
             return (Skill)characterSkills[index];
         } else return null;
+    }
+
+    public void resetSkillsPerEncounter() {
+        for(int i=0; i<characterSkills.Count; i++) {
+            ((Skill)characterSkills[i]).resetTimesUsed();
+        }
+    }
+
+    public void incrementSkillUsage() {
+        currentSkill.incrementTimesUsed();
     }
 
 

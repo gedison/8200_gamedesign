@@ -30,7 +30,6 @@ public class CombatUIController : MonoBehaviour {
 
     private void setPlayerToAttackUsingSkill(int skillID) {
         if (player != null) {
-            myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.ATTACK);
             myCharacterController.setSkillAtIndexToActive(skillID);
         }
     }
@@ -64,7 +63,9 @@ public class CombatUIController : MonoBehaviour {
             Button[] buttons = skillPanel.GetComponentsInChildren<Button>();
             for (int i = 0; i < buttons.Length; i++) {
                 temp = buttons[i].colors;
-                temp.normalColor = skillIsAvailable;
+                Skill skill = myCharacterController.getSkillAtIndex(i);
+                if (skill.hasSkillBeenUsedUpForEncounter()) temp.normalColor = skillIsUnavailable;
+                else temp.normalColor = skillIsAvailable;
                 buttons[i].colors = temp;
             }
         }
