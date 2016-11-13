@@ -3,8 +3,7 @@
 public abstract class Tile : MonoBehaviour {
 
     public bool tileIsOccupied = false;
-
-    public Color withinRangeTileColor = new Color(1, 1, .45f);
+    public Color withinRangeTileColor = new Color(.57f, 1, .08f);
     public Color outsideOfRangeTileColor = new Color(1, 0, 0);
     private Color defaultTileColor = new Color(1, 1, 1);
 
