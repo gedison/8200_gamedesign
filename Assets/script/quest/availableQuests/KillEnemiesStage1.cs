@@ -46,7 +46,7 @@ public class KillEnemiesStage1 : QuestTemplate {
 	override
 	public void updateState () {
 		bool done = true;
-		foreach (GameObject enemy in targets) {
+		foreach (GameObject enemy in targets.transform) {
 			if (enemy != null)
 				done = false;
 		}
@@ -60,4 +60,9 @@ public class KillEnemiesStage1 : QuestTemplate {
 	public QuestTemplate getNextQuest () {
 		return null;
 	}
+
+    override
+    public string getDescription() {
+        return "";
+    }
 }

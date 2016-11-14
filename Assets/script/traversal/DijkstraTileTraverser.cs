@@ -40,6 +40,7 @@ public class DijkstraTileTraverser : TileTraverser{
                 int index = getIndexOneUnitFromStartInDirectionX(minIndex, direction);
                 if (index >= 0) nodes[index].updateDistanceFromStart(nodes[minIndex]);
             }
+
             nodes[minIndex].setHasBeenVisited();
             minIndex = getMinimumNodeIndex(nodes);
         }return nodes;

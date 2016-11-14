@@ -166,6 +166,9 @@ public class CharacterController : MonoBehaviour {
         currentSkill.incrementTimesUsed();
     }
 
+    public int getMovementSpeed() {
+        return myProfession.getBaseMovement();
+    }
 
     void Update () {
 
