@@ -82,6 +82,7 @@
     <Compile Include="Assets\script\profession\Warrior.cs" />
     <Compile Include="Assets\script\quest\QuestManager.cs" />
     <Compile Include="Assets\script\quest\QuestTemplate.cs" />
+    <Compile Include="Assets\script\quest\QuestTrigger.cs" />
     <Compile Include="Assets\script\quest\TriggerTemplate.cs" />
     <Compile Include="Assets\script\quest\availableQuests\KillEnemiesStage1.cs" />
     <Compile Include="Assets\script\skill\BlastSkill.cs" />
