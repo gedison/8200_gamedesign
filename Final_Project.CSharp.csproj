@@ -79,6 +79,7 @@
     <Compile Include="Assets\script\levels\ExperienceManager.cs" />
     <Compile Include="Assets\script\profession\Minion.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
+    <Compile Include="Assets\script\profession\RangedMinion.cs" />
     <Compile Include="Assets\script\profession\Warrior.cs" />
     <Compile Include="Assets\script\quest\QuestManager.cs" />
     <Compile Include="Assets\script\quest\QuestTemplate.cs" />
