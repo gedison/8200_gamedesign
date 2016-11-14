@@ -21,6 +21,12 @@ public abstract class QuestTemplate : MonoBehaviour {
 	// End the quest, do any cleanup; returns true if there is a subsequent quest
 	public abstract bool complete ();
 
+	// Update the state of the quest
+	public abstract void updateState ();
+
 	// If available, acquire the next quest
 	public abstract QuestTemplate getNextQuest ();
+
+	// Returns a text description of the quest
+	public abstract string getDescription();
 }

@@ -42,6 +42,19 @@ public class KillEnemiesStage1 : QuestTemplate {
 		return false;
 	}
 
+	// Check if the quest is completed and update it accordingly
+	override
+	public void updateState () {
+		bool done = true;
+		foreach (GameObject enemy in targets) {
+			if (enemy != null)
+				done = false;
+		}
+
+		if (done)
+			complete ();
+	}
+
 	// If available, acquire the next quest
 	override
 	public QuestTemplate getNextQuest () {

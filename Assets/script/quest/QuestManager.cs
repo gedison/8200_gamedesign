@@ -23,6 +23,11 @@ public class QuestManager : MonoBehaviour {
 	}
 
 	void Update () {
+		// Update the state of active quests
+		foreach (QuestTemplate q in active) {
+			q.updateState ();
+		}
+
 		// Check if any new quests are started
 		foreach(QuestTemplate q in available) {
 			if (q.isStarted () && !q.isCompleted ()) {
@@ -31,6 +36,13 @@ public class QuestManager : MonoBehaviour {
 			} else if (q.isCompleted ()) {
 				completed.Add (q);
 				available.Remove (q);
+
+				// Add the next in the chain, if it exists
+				QuestTemplate n = q.getNextQuest ();
+				if (n != null && available.Contains(n)) {
+					available.Remove (n);
+					active.Add (n);
+				}
 			}
 		}
 		// Check if quests are complete
@@ -38,7 +50,24 @@ public class QuestManager : MonoBehaviour {
 			if (q.isCompleted ()) {
 				active.Remove (q);
 				completed.Add (q);
+
+				// Add the next in the chain, if it exists
+				QuestTemplate n = q.getNextQuest ();
+				if (n != null && available.Contains(n)) {
+					available.Remove (n);
+					active.Add (n);
+				}
 			}
 		}
+	}
+
+	// Get the number of active quests
+	int getActiveCount () {
+		return active.Count;
+	}
+
+	// Get the number of completed quests
+	int getCompletedCount () {
+		return completed.Count;
 	}
 }
