@@ -30,7 +30,10 @@ public class DijkstraTileTraverser : TileTraverser{
 
     public Node[] getTileTrafersal(int start) {
         Node[] nodes = new Node[width * height];
-        for (int i = 0; i < (width * height); i++) nodes[i] = new Node(i, tiles[i].GetComponent<Tile>().getMovementModifier());
+
+        for (int i = 0; i < (width * height); i++) {
+            nodes[i] = new Node(i, tiles[i].GetComponent<Tile>().getMovementModifier());
+        }
         nodes[start].setDistanceFromStart(0);
 
         int minIndex = getMinimumNodeIndex(nodes);

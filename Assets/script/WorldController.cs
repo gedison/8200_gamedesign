@@ -12,6 +12,7 @@ public class WorldController : MonoBehaviour {
     public GameObject tiles;
     public GameObject player;
     public GameObject enemies;
+    public GameObject destructableObjects;
     private ArrayList allCharacters = new ArrayList();
 
 	public ExperienceManager xpManager;
@@ -35,6 +36,7 @@ public class WorldController : MonoBehaviour {
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
+
     }
 
     public Transform getTileFromArrayIndex(int tileID) {
@@ -75,6 +77,18 @@ public class WorldController : MonoBehaviour {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        foreach (Transform destructableObject in destructableObjects.transform) {
+            if (destructableObject != null) {
+                int characterPosition = destructableObject.GetComponent<CharacterPosition>().getTileID();
+                for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                    if (tilesEffectedByPlayerSkill[i] == characterPosition) {
+                        int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+                        destructableObject.GetComponent<Health>().decrementCurrentHealthByX(skillDamage);
                     }
                 }
             }
@@ -159,7 +173,7 @@ public class WorldController : MonoBehaviour {
         if(currentState == GameState.IDLE) {
             Debug.Log("IDLE GAMESTATE");
 
-            if (player != null)player.GetComponent<CharacterController>().startTurn();
+            if (player != null) player.GetComponent<CharacterController>().resetActionPoints();
             
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 currentState = GameState.IN_COMBAT;
