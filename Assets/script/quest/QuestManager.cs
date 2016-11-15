@@ -61,6 +61,16 @@ public class QuestManager : MonoBehaviour {
 		}
 	}
 
+	public string getDescriptions () {
+		string des = "";
+		foreach (QuestTemplate q in active) {
+			des += q.getDescription ();
+			des += "\n\n";
+		}
+
+		return des;
+	}
+
 	// Get the number of active quests
 	int getActiveCount () {
 		return active.Count;

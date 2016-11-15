@@ -8,15 +8,31 @@ ModelImporter:
     100000: //RootNode
     100002: pCube1
     100004: pCube2
+    100006: curve10
+    100008: curve4
+    100010: track01
+    100012: track02
+    100014: tracks
     400000: //RootNode
     400002: pCube1
     400004: pCube2
+    400006: curve10
+    400008: curve4
+    400010: track01
+    400012: track02
+    400014: tracks
     2300000: pCube1
     2300002: pCube2
+    2300004: track01
+    2300006: track02
     3300000: pCube1
     3300002: pCube2
+    3300004: track01
+    3300006: track02
     4300000: pCube1
     4300002: pCube2
+    4300004: track01
+    4300006: track02
     9500000: //RootNode
   materials:
     importMaterials: 1
