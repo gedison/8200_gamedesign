@@ -14,6 +14,7 @@ public class SecondPersonCamera : MonoBehaviour {
     void Start() {
         cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed - 1;
         offset.y += player.transform.position.y;
+        transform.position = player.transform.position + offset;
     }
 
     void Update() {

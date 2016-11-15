@@ -28,6 +28,7 @@ public class EnemyPrototype : CharacterController {
                 Debug.Log("NPC OUT OF RANGE MOVE");
                 ctrl.onTileHover(playerTile);
                 ctrl.onTileSelect(playerTile);
+                GetComponent<CharacterMovementController>().setUpdateTraversalMapToTrue();
             }
 
             if (getCurrentActionPoints() < 2) endTurn();

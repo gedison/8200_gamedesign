@@ -31,6 +31,7 @@ public class CharacterController : MonoBehaviour {
         switch (professionString) {
             case "Warrior": myProfession = new Warrior(); break;
             case "Minion": myProfession = new Minion(); break;
+            case "Ranged Minion": myProfession = new RangedMinion(); break;
             default: myProfession = new Warrior(); break;
         }
 
@@ -47,13 +48,16 @@ public class CharacterController : MonoBehaviour {
                 temp.setCondition(new Dazed());
                 temp.setUsesPerEncounter(1);
                 characterSkills.Add(temp);
-               
-
-                currentSkill = (Skill)characterSkills[2];
+                currentSkill = (Skill)characterSkills[0];
                 break;
 
             case "Minion":
                 characterSkills.Add(new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1));
+                currentSkill = (Skill)characterSkills[0];
+                break;
+
+            case "Ranged Minion":
+                characterSkills.Add(new BlastSkill("Ranged Attack", "Basic Ranged Attack", CharacterAttribute.DEXTERITY, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 3));
                 currentSkill = (Skill)characterSkills[0];
                 break;
         }
@@ -166,6 +170,9 @@ public class CharacterController : MonoBehaviour {
         currentSkill.incrementTimesUsed();
     }
 
+    public int getMovementSpeed() {
+        return myProfession.getBaseMovement();
+    }
 
     void Update () {
 

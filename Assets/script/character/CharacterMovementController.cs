@@ -29,6 +29,10 @@ public class CharacterMovementController : MonoBehaviour {
         }
 	}
 
+    public void setUpdateTraversalMapToTrue() {
+        traversalMapNeedsToBeUpdated = true;
+    }
+
     public bool doesTraversalMapNeedToBeUpdated() {
         return traversalMapNeedsToBeUpdated;
     }

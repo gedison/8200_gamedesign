@@ -95,14 +95,14 @@ public class WorldController : MonoBehaviour {
         List<Node> path = new List<Node>();
         Node savedNode = myTileController.getLastTraversalPath();
         while (savedNode != null) {
-            if (savedNode.getDistanceFromStart() < myCharacterMovementController.movementSpeed)
+            if (savedNode.getDistanceFromStart() < myCharacterController.getMovementSpeed())
                 path.Insert(0, savedNode);
             else
                 myTileController.getTileFromID(savedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
             savedNode = savedNode.getPreviousNode();
         }
 
-        if (path.Count > 0) {
+        if (path.Count >= 0) {
             myCharacterMovementController.setPath(path);
             if (currentState == GameState.IN_COMBAT) myCharacterController.decrementActionPointsByMovement();
         }
@@ -177,6 +177,7 @@ public class WorldController : MonoBehaviour {
 
                 //Check if turn is over
                 if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.TURN_OVER && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
+                    updateTraversalMap(true);
                     myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.IDLE);
                     myInitativeController.endTurn();
                 }   
@@ -198,7 +199,7 @@ public class WorldController : MonoBehaviour {
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
 
-            updateTraversalMap(true);
+           
         }
 
         updateTraversalMap(false);

@@ -91,6 +91,7 @@ public class TileController{
         if (character == null || tileIndex < 0) return false;
         resetLastPath();
 
+        CharacterController myCharacterController = character.GetComponent<CharacterController>();
         CharacterMovementController myCharacterMovementController = character.GetComponent<CharacterMovementController>();
         Node[] traversalMap = myCharacterMovementController.getTraversalMap();
         if (traversalMap != null) {
@@ -98,7 +99,7 @@ public class TileController{
             savedNode = traversalMap[tileIndex];
             while (selectedNode != null) {
                 int distanceFromStart = selectedNode.getDistanceFromStart();
-                if (distanceFromStart < myCharacterMovementController.movementSpeed)
+                if (distanceFromStart < myCharacterController.getMovementSpeed())
                     getTileFromID(selectedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_WITHIN_RANGE);
                 else
                     getTileFromID(selectedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.SELECTED_OUTSIDE_RANGE);
