@@ -63,16 +63,9 @@ public class KillEnemiesStage1 : QuestTemplate {
 		return null;
 	}
 
-<<<<<<< HEAD
 	// Returns the quest description
 	override
 	public string getDescription () {
 		return description;
 	}
-=======
-    override
-    public string getDescription() {
-        return "";
-    }
->>>>>>> bcd1b40a27e470417a9e6952b1cfafaded38a2e3
 }
