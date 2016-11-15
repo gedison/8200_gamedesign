@@ -24,7 +24,7 @@ public class Health : MonoBehaviour {
         currentHealth = ((currentHealth - x) < 0) ? 0 : (currentHealth - x);
     }
 
-    void OnMouseDown() {
+    void OnMouseOver() {
         selectedText.GetComponent<TextSelect>().gameObjectWithHealth = this.gameObject;
     }
 
