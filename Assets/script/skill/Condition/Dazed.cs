@@ -20,7 +20,7 @@ public class Dazed : MonoBehaviour, Condition{
 
     public void doConditionActionOnSelf(){
         if (turnsActive > 0) {
-            GetComponent<CharacterController>().setActionPointsToZero();
+            if(GetComponent<CharacterController>()!=null)GetComponent<CharacterController>().setActionPointsToZero();
             decrementConditionCount();
         }
     }

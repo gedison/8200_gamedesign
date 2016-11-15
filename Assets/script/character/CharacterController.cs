@@ -65,7 +65,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     public void startTurn() {
-        currentActionPoints = totalActionPoints;
+        resetActionPoints();
         currentCharacterState = CharacterState.MOVE;
     }
 
@@ -127,6 +127,10 @@ public class CharacterController : MonoBehaviour {
 
     public int getCurrentActionPoints() {
         return currentActionPoints;
+    }
+
+    public void resetActionPoints() {
+        currentActionPoints = totalActionPoints;
     }
 
     public void decrementActionPointsByAttack() {
