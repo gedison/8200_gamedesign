@@ -4,6 +4,8 @@ using System.Collections;
 public class KillEnemiesStage1 : QuestTemplate {
 	private bool started = false;
 	private bool completed = false;
+	private string description = "There are two enemies within the dungeon. They must be cleared" +
+		" out, in order to make the area safe. Find and kill the two enemies.";
 
 	public GameObject targets;
 
@@ -59,5 +61,11 @@ public class KillEnemiesStage1 : QuestTemplate {
 	override
 	public QuestTemplate getNextQuest () {
 		return null;
+	}
+
+	// Returns the quest description
+	override
+	public string getDescription () {
+		return description;
 	}
 }
