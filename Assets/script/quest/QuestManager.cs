@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 public class QuestManager : MonoBehaviour {
 	public GameObject qObjects;
+	private bool instantiated = false;
 	// Keep our list of quests
 	private List<QuestTemplate> quests;
 	private List<QuestTemplate> available;
@@ -20,9 +21,17 @@ public class QuestManager : MonoBehaviour {
 		available = new List<QuestTemplate>();
 		active = new List<QuestTemplate>();
 		completed = new List<QuestTemplate>();
+		instantiated = true;
 	}
 
 	void Update () {
+		if (!instantiated) {
+			quests = new List<QuestTemplate>();
+			available = new List<QuestTemplate>();
+			active = new List<QuestTemplate>();
+			completed = new List<QuestTemplate>();
+			instantiated = true;
+		}
 		// Update the state of active quests
 		foreach (QuestTemplate q in active) {
 			q.updateState ();
@@ -62,6 +71,13 @@ public class QuestManager : MonoBehaviour {
 	}
 
 	public string getDescriptions () {
+		if (!instantiated) {
+			quests = new List<QuestTemplate>();
+			available = new List<QuestTemplate>();
+			active = new List<QuestTemplate>();
+			completed = new List<QuestTemplate>();
+			instantiated = true;
+		}
 		string des = "";
 		foreach (QuestTemplate q in active) {
 			des += q.getDescription ();

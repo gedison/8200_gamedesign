@@ -34,6 +34,8 @@ public class WorldController : MonoBehaviour {
         myTileController = new TileController(tiles, tileWidth, tileHeight);
         myInitativeController = new InitativeController(player, enemies, myTileController);
 
+		qManager = new QuestManager ();
+
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
 
