@@ -13,6 +13,7 @@ public class WorldController : MonoBehaviour {
     public GameObject player;
     public GameObject enemies;
     public GameObject destructableObjects;
+    public GameStateText gamestateText;
     private ArrayList allCharacters = new ArrayList();
 
 	public ExperienceManager xpManager;
@@ -23,6 +24,8 @@ public class WorldController : MonoBehaviour {
     private InitativeController myInitativeController;
 
     public bool onUI = false;
+    public bool onStart = true;
+
 
     void Awake() {
         if (instance == null) instance = this;
@@ -31,6 +34,7 @@ public class WorldController : MonoBehaviour {
     }
 		
     private void StartGame() {
+
         myTileController = new TileController(tiles, tileWidth, tileHeight);
         myInitativeController = new InitativeController(player, enemies, myTileController);
 
@@ -38,7 +42,7 @@ public class WorldController : MonoBehaviour {
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
-
+        onStart = false;
     }
 
     public Transform getTileFromArrayIndex(int tileID) {
@@ -178,10 +182,12 @@ public class WorldController : MonoBehaviour {
             if (player != null) player.GetComponent<CharacterController>().resetActionPoints();
             
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
+                Debug.Log("Transition");
+                gamestateText.setStartCombatString();
                 currentState = GameState.IN_COMBAT;
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
-        }else if(currentState == GameState.IN_COMBAT) {
+        }else if(currentState == GameState.IN_COMBAT && !onStart) {
             Debug.Log("COMBAT STATE");
             myInitativeController.addCharactersToIntiative();
 
@@ -202,6 +208,8 @@ public class WorldController : MonoBehaviour {
             //Player Won Encounter
             if (myInitativeController.getNumberOfPlayersInIntiative() == 1) {
                 if (player != null) {
+                    gamestateText.setWinString();
+
                     currentState = GameState.IDLE;
                     CharacterController myCharacterController = player.GetComponent<CharacterController>();
                     myCharacterController.resetSkillsPerEncounter();
@@ -210,7 +218,8 @@ public class WorldController : MonoBehaviour {
             }
 
             //Player Lost Encounter
-            if(player== null) {
+            if(player == null) {
+                gamestateText.setLoseString();
                 currentState = GameState.IDLE;
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }

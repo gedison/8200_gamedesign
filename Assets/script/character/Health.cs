@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
 
-    public Text selectedText;
+   
     public int totalHealth = 20;
     private int currentHealth;
 
 	void Start () {
         currentHealth = totalHealth;
-        selectedText = GameObject.Find("Selected Object").GetComponent<Text>(); 
     }
 
     public int getCurrentHealth() {
@@ -24,17 +23,12 @@ public class Health : MonoBehaviour {
         currentHealth = ((currentHealth - x) < 0) ? 0 : (currentHealth - x);
     }
 
-    void OnMouseOver() {
-        selectedText.GetComponent<TextSelect>().gameObjectWithHealth = this.gameObject;
-    }
 
     void Update() {
         if (currentHealth == 0) {
             int currentInstanceID = GetComponent<CharacterPosition>().getTileID();
             WorldController.instance.switchTileIsOccupied(currentInstanceID);
             WorldController.instance.updateTraversalMap(true);
-
-            selectedText.GetComponent<TextSelect>().gameObjectWithHealth = null;
 
             if(GetComponent<EnemyScreenSpaceUI>()!=null)GetComponent<EnemyScreenSpaceUI>().destroyObject();
             Destroy(this.gameObject);
