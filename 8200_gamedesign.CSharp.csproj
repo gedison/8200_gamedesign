@@ -101,6 +101,7 @@
     <Compile Include="Assets\script\traversal\TileTraverser.cs" />
     <Compile Include="Assets\script\ui\CharacterUIController.cs" />
     <Compile Include="Assets\script\ui\CombatUIController.cs" />
+    <Compile Include="Assets\script\ui\EnemyScreenSpaceUI.cs" />
     <Compile Include="Assets\script\ui\JournalDisplay.cs" />
     <Compile Include="Assets\script\ui\TextSelect.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
