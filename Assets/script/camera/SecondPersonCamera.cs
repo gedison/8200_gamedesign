@@ -37,7 +37,7 @@ public class SecondPersonCamera : MonoBehaviour {
             panned = true;
         }
         
-        
+        /*
         if (Input.GetMouseButton(2) && !panned) {
             Vector3 delta = Input.mousePosition - lastPosition;
             if (Vector3.Distance(transform.position, (player.transform.position + offset)) < 6) {
@@ -48,6 +48,7 @@ public class SecondPersonCamera : MonoBehaviour {
             offset += (transform.position - (player.transform.position+offset));
             lastPosition = Input.mousePosition;
         }
+        */
     }
 
     void LateUpdate() {

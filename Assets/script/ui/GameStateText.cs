@@ -5,34 +5,48 @@ public class GameStateText : MonoBehaviour {
 
     public Text myText;
 
+    private string tutorialString1 = "Click a tile to move";
+    private string tutorialString2 = "Use the right mouse button to pan across the screen";
+    private string tutorialString3 = "Click a skill and an enemy to attack";
+    private string tutorialString4 = "Different skills have different effects";
+
     public string startCombat = "Enemy Spotted: Begin Combat";
     public string winString = "All Enemies Defeated";
     public string loseString = "Game Over";
-    public float textPopupTime = 4.0f;
-
-    private bool firstTime = true;
-    private bool firstTime2 = true;
+    public float textPopupTime = 3.0f;
 
     void Start () {
         myText.text = "";
 	}
 
+
+    private bool setCombatHasBeenCalled = false;
+    private bool combatTutorialHasBeenCalled = false;
     public void setStartCombatString() {
-        if (firstTime2) firstTime2 = false;
-        else myText.text = startCombat;
-        Invoke("DisableText", textPopupTime);
+        if (!setCombatHasBeenCalled) {
+            setCombatHasBeenCalled = true;
+            myText.text = tutorialString1;
+            Invoke("DisableTextTutorial", textPopupTime);
+        } else {
+            myText.text = startCombat;
+            if (!combatTutorialHasBeenCalled) {
+                combatTutorialHasBeenCalled = true;
+                Invoke("DisableTextTutorial2", textPopupTime);
+            } else Invoke("DisableText", textPopupTime);
+        } 
     }
 
+    private bool setWinHasBeenCalled = false;
     public void setWinString() {
-        Debug.Log("WIN STRING CALLED");
-        if (firstTime) firstTime = false;
-        else myText.text = winString;
-        Invoke("DisableText", textPopupTime);
+        if (!setWinHasBeenCalled) {
+            setWinHasBeenCalled = true;
+        }else {
+            myText.text = winString;
+            Invoke("DisableText", textPopupTime);
+        }
     }
 
     public void setLoseString() {
-        Debug.Log("LOSE CALLED");
-      
         myText.text = loseString;
     }
 
@@ -40,7 +54,19 @@ public class GameStateText : MonoBehaviour {
         myText.text = "";
     }
 
-    void Update() {
-
+    void DisableTextTutorial() {
+        myText.text = tutorialString2;
+        Invoke("DisableText", textPopupTime);
     }
+    
+    void DisableTextTutorial2() {
+        myText.text = tutorialString3;
+        Invoke("DisableTextTutorial3", textPopupTime);
+    }
+
+    void DisableTextTutorial3() {
+        myText.text = tutorialString4;
+        Invoke("DisableText", textPopupTime);
+    }
+
 }
