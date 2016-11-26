@@ -42,6 +42,10 @@ public class CombatUIController : MonoBehaviour {
         if (player != null) myCharacterController.endTurn();
     }
 
+    public void setMovementSelected() {
+        movementButton.Select();
+    }
+
     public void Update() {
         if (!setSkillNames) {
             Button[] buttons = skillPanel.GetComponentsInChildren<Button>();
