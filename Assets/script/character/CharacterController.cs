@@ -42,9 +42,9 @@ public class CharacterController : MonoBehaviour {
 
         switch (professionString) {
             case "Warrior":
-                characterSkills.Add(new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 2, 3, 1, 1));
-                characterSkills.Add(new BurstSkill("Area Attack", "Attack all enemies in a one burst radius", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 2, 1));
-                BlastSkill temp = new BlastSkill("Daze Enemy", "Dazes one enemy within a one square radius", CharacterAttribute.STRENGTH, CharacterAttribute.DEXTERITY, 1, 3, 1, 1);
+                characterSkills.Add(new BlastSkill("Slash", "A powerful melee attack that targets one enemy within a one tile radius of your character.", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 2, 3, 1, 1));
+                characterSkills.Add(new BurstSkill("Spin Strike", "A weaker but more versitile attack, the spin strike targets all enemies within a one tile radius of your character.", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1));
+                BlastSkill temp = new BlastSkill("Dazing Blow", "On a successful strike one enemy within a one tile radius of your character will be dazed for two turns. This attack can be used once per encounter.", CharacterAttribute.STRENGTH, CharacterAttribute.DEXTERITY, 1, 3, 1, 1);
                 temp.setCondition(new Dazed());
                 temp.setUsesPerEncounter(1);
                 characterSkills.Add(temp);

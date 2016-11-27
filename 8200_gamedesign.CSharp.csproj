@@ -66,7 +66,6 @@
     <Compile Include="Assets\Campfire\Script\FireLightScript.cs" />
     <Compile Include="Assets\script\InitativeController.cs" />
     <Compile Include="Assets\script\TileController.cs" />
-    <Compile Include="Assets\script\TutorialController.cs" />
     <Compile Include="Assets\script\WorldController.cs" />
     <Compile Include="Assets\script\camera\SecondPersonCamera.cs" />
     <Compile Include="Assets\script\character\CharacterController.cs" />
@@ -105,9 +104,8 @@
     <Compile Include="Assets\script\ui\EnemyScreenSpaceUI.cs" />
     <Compile Include="Assets\script\ui\GameStateText.cs" />
     <Compile Include="Assets\script\ui\JournalDisplay.cs" />
+    <Compile Include="Assets\script\ui\ToolTipTrigger.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
-    <Compile Include="Assets\script\ui\tool tip\ToolTipTrigger.cs" />
-    <Compile Include="Assets\script\ui\tool tip\ToolTipView.cs" />
     <Compile Include="Assets\script\ui_element\UICircle2.cs" />
   </ItemGroup>
   <ItemGroup>

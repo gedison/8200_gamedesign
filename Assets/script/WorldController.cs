@@ -26,7 +26,6 @@ public class WorldController : MonoBehaviour {
     public bool onUI = false;
     public bool onStart = true;
 
-
     void Awake() {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(gameObject);

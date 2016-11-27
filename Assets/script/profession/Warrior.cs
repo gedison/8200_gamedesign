@@ -17,7 +17,7 @@
     }
 
     public int getBaseMovement(){
-        return 12;
+        return 6;
     }
 
     public string toString(){

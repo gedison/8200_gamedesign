@@ -54,9 +54,15 @@ public class CombatUIController : MonoBehaviour {
                 if (skill != null) {
                     Debug.Log(skill.getSkillName());
                     buttons[i].GetComponentInChildren<Text>().text = skill.getSkillName();
+                    buttons[i].GetComponent<ToolTipTrigger>().setSkill(skill);
                     setSkillNames = true;
                 }
             }
+
+
+            //Set Move ToolTip
+            movementButton.GetComponent<ToolTipTrigger>().setMove(myCharacterController.getMovementSpeed());
+            endTurnButton.GetComponent<ToolTipTrigger>().setTipToValues(new string[] { "End Turn", "N/A", "You're finished with your turn or you've ran out of AP, press this button to allow the rest of the encounter to procede.", "No Damage"});
         }
 
         if(player!=null && myCharacterController.getCurrentActionPoints() == 5) {

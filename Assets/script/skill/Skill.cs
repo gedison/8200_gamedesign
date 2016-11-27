@@ -74,10 +74,7 @@ public abstract class Skill {
     }
 
     public string toString() {
-        string ret = "";
-        ret += skillName + "\n";
-        ret += skillDescription + "\n";
-        ret += "Damage: " + numberOfDice + " D-" + numberOfSidesOnDie;
+        string ret = "Damage: " + numberOfDice + "D" + numberOfSidesOnDie;
         return ret;
     }
 
