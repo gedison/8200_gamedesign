@@ -180,10 +180,12 @@ public class WorldController : MonoBehaviour {
 
             if (player != null) player.GetComponent<CharacterController>().resetActionPoints();
 
+            
             if (player.GetComponent<Condition>() != null) {
                 Condition currentCondition = player.GetComponent<Condition>();
                 currentCondition.doConditionActionOnSelf();
             }
+            
 
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 Debug.Log("Transition");
