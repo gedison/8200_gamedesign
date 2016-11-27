@@ -106,6 +106,8 @@
     <Compile Include="Assets\script\ui\GameStateText.cs" />
     <Compile Include="Assets\script\ui\JournalDisplay.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
+    <Compile Include="Assets\script\ui\tool tip\ToolTipTrigger.cs" />
+    <Compile Include="Assets\script\ui\tool tip\ToolTipView.cs" />
     <Compile Include="Assets\script\ui_element\UICircle2.cs" />
   </ItemGroup>
   <ItemGroup>
