@@ -78,6 +78,8 @@
     <Compile Include="Assets\script\item\Item.cs" />
     <Compile Include="Assets\script\item\Weapon.cs" />
     <Compile Include="Assets\script\levels\ExperienceManager.cs" />
+    <Compile Include="Assets\script\misc\Collectable.cs" />
+    <Compile Include="Assets\script\misc\Rotator.cs" />
     <Compile Include="Assets\script\profession\Minion.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
     <Compile Include="Assets\script\profession\RangedMinion.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Assets\script\skill\BlastSkill.cs" />
     <Compile Include="Assets\script\skill\BurstSkill.cs" />
     <Compile Include="Assets\script\skill\Condition\Condition.cs" />
+    <Compile Include="Assets\script\skill\Condition\Cure.cs" />
     <Compile Include="Assets\script\skill\Condition\Dazed.cs" />
     <Compile Include="Assets\script\skill\Skill.cs" />
     <Compile Include="Assets\script\tile\Difficult.cs" />
