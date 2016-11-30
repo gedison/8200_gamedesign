@@ -53,6 +53,7 @@ public class QuestManager : MonoBehaviour {
 			completed = new List<QuestTemplate>();
 			instantiated = true;
 		}
+		ArrayList removable = new ArrayList();
 		// Update the state of active quests
 		foreach (QuestTemplate q in active) {
 			q.updateState ();
@@ -64,23 +65,31 @@ public class QuestManager : MonoBehaviour {
 			if (q.isStarted () && !q.isCompleted ()) {
 				Debug.Log ("YAY!!!");
 				active.Add (q);
-				available.Remove (q);
+				removable.Add (q);
+				//available.Remove (q);
 			} else if (q.isCompleted ()) {
 				completed.Add (q);
-				available.Remove (q);
+				removable.Add (q);
+				//available.Remove (q);
 
 				// Add the next in the chain, if it exists
 				QuestTemplate n = q.getNextQuest ();
 				if (n != null && available.Contains(n)) {
-					available.Remove (n);
+					removable.Add (n);
+					//available.Remove (n);
 					active.Add (n);
 				}
 			}
 		}
+		foreach (QuestTemplate q in removable) {
+			available.Remove (q);
+		}
+		removable.Clear ();
 		// Check if quests are complete
 		foreach (QuestTemplate q in active) {
 			if (q.isCompleted ()) {
-				active.Remove (q);
+				Debug.Log ("Quest done!");
+				removable.Add (q);
 				completed.Add (q);
 
 				// Add the next in the chain, if it exists
@@ -91,6 +100,12 @@ public class QuestManager : MonoBehaviour {
 				}
 			}
 		}
+		foreach (QuestTemplate q in removable) {
+			active.Remove (q);
+		}
+		removable.Clear ();
+
+
 	}
 
 	public string getDescriptions () {

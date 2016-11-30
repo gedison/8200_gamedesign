@@ -22,6 +22,7 @@ public class KillEnemiesStage1 : QuestTemplate {
 	public void start () {
 		// Begin the quest
 		started = true;
+		completed = false;
 		//foreach 
 	}
 
@@ -47,11 +48,13 @@ public class KillEnemiesStage1 : QuestTemplate {
 	// Check if the quest is completed and update it accordingly
 	override
 	public void updateState () {
-		bool done = true;
-		foreach (GameObject enemy in targets.transform) {
-			if (enemy != null)
-				done = false;
+		bool done = false;
+		int count = 0;
+		foreach (Transform enemy in targets.transform) {
+			count += 1;
 		}
+		if (count == 0)
+			done = true;
 
 		if (done)
 			complete ();
