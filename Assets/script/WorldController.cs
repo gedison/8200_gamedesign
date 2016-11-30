@@ -18,6 +18,10 @@ public class WorldController : MonoBehaviour {
 
 	public ExperienceManager xpManager;
 	public QuestManager qManager;
+	public GameObject Quests;
+
+	public GameObject quest;
+	public QuestTrigger trigger;
 
     public int tileWidth, tileHeight;
     private TileController myTileController;
@@ -38,6 +42,20 @@ public class WorldController : MonoBehaviour {
         myInitativeController = new InitativeController(player, enemies, myTileController);
 
 		qManager = new QuestManager ();
+		trigger = new QuestTrigger ();
+		qManager.qObjects = Quests;
+		foreach (Transform qo in Quests.transform) {
+			GameObject qpar = qo.gameObject;
+			qManager.SetQuests (qpar);
+		}
+		// Acquire our quest to hand to the trigger
+		QuestTemplate q = quest.GetComponent<KillEnemiesStage1> ();
+		if (q == null) {
+			Debug.Log ("ebin fugg :DDDDD");
+		}
+		trigger.quest = q;
+
+		trigger.activate ();
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
@@ -232,6 +250,8 @@ public class WorldController : MonoBehaviour {
 
            
         }
+
+		qManager.Update ();
 
         updateTraversalMap(false);
     }

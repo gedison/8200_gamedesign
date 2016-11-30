@@ -24,7 +24,28 @@ public class QuestManager : MonoBehaviour {
 		instantiated = true;
 	}
 
-	void Update () {
+	public void SetQuests(GameObject q) {
+		if (!instantiated) {
+			quests = new List<QuestTemplate>();
+			available = new List<QuestTemplate>();
+			active = new List<QuestTemplate>();
+			completed = new List<QuestTemplate>();
+			instantiated = true;
+		}
+		QuestTemplate[] acquired = q.GetComponents<QuestTemplate> ();
+		Debug.Log ("Set Quest: " + q.name);
+		Debug.Log ("Length: " + acquired.GetLength(0));
+		foreach (QuestTemplate qt in acquired) {
+			if (qt == null)
+				break;
+			Debug.Log (qt.getDescription ());
+			Debug.Log (qt.GetType ());
+			quests.Add (qt);
+			available.Add (qt);
+		}
+	}
+
+	public void Update () {
 		if (!instantiated) {
 			quests = new List<QuestTemplate>();
 			available = new List<QuestTemplate>();
@@ -39,7 +60,9 @@ public class QuestManager : MonoBehaviour {
 
 		// Check if any new quests are started
 		foreach(QuestTemplate q in available) {
+			Debug.Log ("At least one.");
 			if (q.isStarted () && !q.isCompleted ()) {
+				Debug.Log ("YAY!!!");
 				active.Add (q);
 				available.Remove (q);
 			} else if (q.isCompleted ()) {
@@ -79,6 +102,7 @@ public class QuestManager : MonoBehaviour {
 			instantiated = true;
 		}
 		string des = "";
+		Debug.Log ("Size: " + active.Count);
 		foreach (QuestTemplate q in active) {
 			des += q.getDescription ();
 			des += "\n\n";
