@@ -44,18 +44,18 @@ public class WorldController : MonoBehaviour {
 		qManager = new QuestManager ();
 		trigger = new QuestTrigger ();
 		qManager.qObjects = Quests;
+        /*
 		foreach (Transform qo in Quests.transform) {
 			GameObject qpar = qo.gameObject;
 			qManager.SetQuests (qpar);
 		}
+
 		// Acquire our quest to hand to the trigger
 		QuestTemplate q = quest.GetComponent<KillEnemiesStage1> ();
-		if (q == null) {
-			Debug.Log ("ebin fugg :DDDDD");
-		}
+		if (q == null) Debug.Log ("ebin fugg :DDDDD");
 		trigger.quest = q;
-
 		trigger.activate ();
+        */
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
@@ -219,8 +219,17 @@ public class WorldController : MonoBehaviour {
             if (characterWhosTurnItIs == null) myInitativeController.endTurn(); 
             else {
                 CharacterController myCharacterController = characterWhosTurnItIs.GetComponent<CharacterController>();
-                if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.IDLE) myCharacterController.startTurn();
+                if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.IDLE) {
+                    myCharacterController.startTurn();
 
+                    //Apply Conditions to player at start of their turn
+                    if(characterWhosTurnItIs == player) {
+                        if (player.GetComponent<Condition>() != null) {
+                            Condition currentCondition = player.GetComponent<Condition>();
+                            currentCondition.doConditionActionOnSelf();
+                        }
+                    }
+                }
                 //Check if turn is over
                 if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.TURN_OVER && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
                     updateTraversalMap(true);
