@@ -82,6 +82,7 @@
     <Compile Include="Assets\script\misc\Collectable.cs" />
     <Compile Include="Assets\script\misc\Rotator.cs" />
     <Compile Include="Assets\script\profession\Minion.cs" />
+    <Compile Include="Assets\script\profession\MinionBoss.cs" />
     <Compile Include="Assets\script\profession\Profession.cs" />
     <Compile Include="Assets\script\profession\RangedMinion.cs" />
     <Compile Include="Assets\script\profession\Warrior.cs" />

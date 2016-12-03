@@ -50,7 +50,7 @@ public class CharacterController : MonoBehaviour {
                 characterSkills.Add(temp);
                 currentSkill = (Skill)characterSkills[0];
                 break;
-
+            case "Minion Boss":
             case "Minion":
                 characterSkills.Add(new BlastSkill("Melee Attack", "Basic Melee Attack", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 1, 3, 1, 1));
                 currentSkill = (Skill)characterSkills[0];

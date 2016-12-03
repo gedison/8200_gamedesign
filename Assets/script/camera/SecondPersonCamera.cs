@@ -57,13 +57,11 @@ public class SecondPersonCamera : MonoBehaviour {
     }
 
     void LateUpdate() {
-        if(player!=null && player.GetComponent<CharacterMovementController>().isCharacterMoving())isMoving = true;
+        if (player != null && player.GetComponent<CharacterMovementController>().isCharacterMoving()) isMoving = true;
+        else isMoving = false;
 
-        if (player != null &&  isMoving) {
-            if (!isCameraWithinDistanceOfPlayer(transform.position.x , transform.position.z, player.transform.position.x, player.transform.position.z, 3.0f)) {
-                transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, (player.transform.position + offset)) < 3.0f) isMoving = false;
-            }
+        if (player != null && isMoving && !isCameraWithinDistanceOfPlayer(transform.position.x, transform.position.z, player.transform.position.x, player.transform.position.z, 3.0f)) {
+            transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
         }
         
             
