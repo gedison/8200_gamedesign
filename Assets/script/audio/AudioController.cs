@@ -63,7 +63,11 @@ public class AudioController : MonoBehaviour {
             timeIn = 0.0f;
         }
 
-        float zPosition = musicFollowsMyZCoordinate.transform.position.z;
+        float zPosition = 0;
+        if (musicFollowsMyZCoordinate != null) {
+            zPosition = musicFollowsMyZCoordinate.transform.position.z;
+        }
+
         switch (WorldController.instance.currentState) {
             case WorldController.GameState.IDLE:
                 //Outside
@@ -80,8 +84,9 @@ public class AudioController : MonoBehaviour {
             case WorldController.GameState.IN_COMBAT:
                 //Not Boss
                 if (zPosition < bossStartZCoordinate) {
-                    if (wierdCombatStartBugFix) wierdCombatStartBugFix = false;
-                    else nextAudio = fightMusic;
+                  //  if (wierdCombatStartBugFix) wierdCombatStartBugFix = false;
+                    //else 
+                    nextAudio = fightMusic;
                 //Boss
                 } else {
                     nextAudio = fightMusic;

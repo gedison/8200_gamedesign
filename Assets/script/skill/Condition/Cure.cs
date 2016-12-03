@@ -6,7 +6,7 @@ public class Cure : MonoBehaviour, Condition{
     private int turnsActive = 1;
 
     public string getName() {
-        return "Cure Wounds";
+        return "+20";
     }
 
     public void removeCondition() {

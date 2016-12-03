@@ -1,7 +1,7 @@
 ﻿public class MinionBoss : Profession {
 
     public int getBaseHealth() {
-        return 10;
+        return 12;
     }
 
     public int getBaseAttribute(CharacterController.CharacterAttribute attribute) {

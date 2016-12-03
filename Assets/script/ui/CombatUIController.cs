@@ -10,7 +10,7 @@ public class CombatUIController : MonoBehaviour {
     public GameObject skillPanel;
 
     public Color skillIsAvailable = new Color(1, 1, .45f);
-    public Color skillIsUnavailable = new Color(1, 0, 0);
+    public Color skillIsUnavailable = new Color(.66f, .67f, .7f);
 
     private CharacterController myCharacterController;
     private ArrayList skills = new ArrayList();

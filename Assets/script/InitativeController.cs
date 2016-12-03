@@ -23,8 +23,10 @@ public class InitativeController {
             int playerVisibilityRange = player.GetComponent<CharacterController>().visibilityRange;
 
             foreach (Transform enemy in enemies.transform) {
-                int enemyOrigin = enemy.GetComponent<CharacterPosition>().getTileID();
-                if (myTileController.getDistanceBetweenTwoTiles(playerOrigin, enemyOrigin) <= playerVisibilityRange) return true;
+                if (enemy != null) { 
+                    int enemyOrigin = enemy.GetComponent<CharacterPosition>().getTileID();
+                    if (myTileController.getDistanceBetweenTwoTiles(playerOrigin, enemyOrigin) <= playerVisibilityRange) return true;
+                }
             }
         }
         

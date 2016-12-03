@@ -15,7 +15,7 @@ public class SecondPersonCamera : MonoBehaviour {
 
 
     void Start() {
-        cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed - 1;
+        cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed-3;
         offset.y += player.transform.position.y;
         transform.position = player.transform.position + offset;
     }
@@ -37,7 +37,7 @@ public class SecondPersonCamera : MonoBehaviour {
             delta = delta * mouseSensitivity;
             delta = Quaternion.Euler(0, 0, -yOffset) * delta;
 
-            if(isCameraWithinDistanceOfPlayer(transform.position.x+delta.y, transform.position.z-delta.x, player.transform.position.x, player.transform.position.z, 5.0f))
+            if(player!=null && isCameraWithinDistanceOfPlayer(transform.position.x+delta.y, transform.position.z-delta.x, player.transform.position.x, player.transform.position.z, 5.0f))
                 transform.Translate(delta.y, 0, -delta.x, Space.World);
 
             lastPosition = Input.mousePosition;
@@ -54,13 +54,14 @@ public class SecondPersonCamera : MonoBehaviour {
             offset += (transform.position - (player.transform.position+offset));
             lastPosition = Input.mousePosition;
         }
+
     }
 
     void LateUpdate() {
         if (player != null && player.GetComponent<CharacterMovementController>().isCharacterMoving()) isMoving = true;
         else isMoving = false;
 
-        if (player != null && isMoving && !isCameraWithinDistanceOfPlayer(transform.position.x, transform.position.z, player.transform.position.x, player.transform.position.z, 3.0f)) {
+        if (player != null && isMoving && !isCameraWithinDistanceOfPlayer(transform.position.x, transform.position.z, player.transform.position.x, player.transform.position.z, 4.5f)) {
             transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
         }
         

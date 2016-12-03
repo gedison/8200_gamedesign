@@ -17,6 +17,7 @@ public class EnemyPrototype : CharacterController {
             if (this.GetComponent<Condition>() != null) {
                 Condition currentCondition = this.GetComponent<Condition>();
                 currentCondition.doConditionActionOnSelf();
+                this.GetComponent<ScreenSpaceDamageUI>().createDamageText(currentCondition.getName());
             }
 
             int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();

@@ -31,6 +31,7 @@ public class Health : MonoBehaviour {
             WorldController.instance.updateTraversalMap(true);
 
             if(GetComponent<EnemyScreenSpaceUI>()!=null)GetComponent<EnemyScreenSpaceUI>().destroyObject();
+            if (GetComponent<ScreenSpaceDamageUI>() != null) GetComponent<ScreenSpaceDamageUI>().destroyObject();
             Destroy(this.gameObject);
         }
     }

@@ -29,6 +29,7 @@ public class WorldController : MonoBehaviour {
 
     public bool onUI = false;
     public bool onStart = true;
+    public bool playTutorial = true;
 
     void Awake() {
         if (instance == null) instance = this;
@@ -90,14 +91,23 @@ public class WorldController : MonoBehaviour {
                         int playerRole = myCharacterController.roleD20ForCurrentSkill();
                         if (character != playerWhosTurnItIs && character.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
                             int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+                            if (character.GetComponent<ScreenSpaceDamageUI>() != null) {
+                                ScreenSpaceDamageUI damageUI = character.GetComponent<ScreenSpaceDamageUI>();
+                                damageUI.createDamageText("-"+skillDamage);
+                            }
+
                             character.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
-
                             Condition conditionToApply = myCharacterController.getConditionFromCurrentSkill();
-
                             if(conditionToApply!=null && character.GetComponent<Condition>() == null) {
                                 switch (conditionToApply.getName()) {
                                     case "Dazed":character.AddComponent<Dazed>();break;
                                 }
+                            }
+
+                        }else {
+                            if (character.GetComponent<ScreenSpaceDamageUI>() != null) {
+                                ScreenSpaceDamageUI damageUI = character.GetComponent<ScreenSpaceDamageUI>();
+                                damageUI.createDamageText("miss");
                             }
                         }
                     }
@@ -196,12 +206,19 @@ public class WorldController : MonoBehaviour {
         if(currentState == GameState.IDLE) {
             Debug.Log("IDLE GAMESTATE");
 
+            if (playTutorial) {
+                gamestateText.setTutorialText();
+                playTutorial = false;
+            }
+            
+
             if (player != null) player.GetComponent<CharacterController>().resetActionPoints();
 
             
-            if (player.GetComponent<Condition>() != null) {
+            if (player!=null && player.GetComponent<Condition>() != null) {
                 Condition currentCondition = player.GetComponent<Condition>();
                 currentCondition.doConditionActionOnSelf();
+                player.GetComponent<ScreenSpaceDamageUI>().createHealText(currentCondition.getName());
             }
             
 
@@ -227,6 +244,7 @@ public class WorldController : MonoBehaviour {
                         if (player.GetComponent<Condition>() != null) {
                             Condition currentCondition = player.GetComponent<Condition>();
                             currentCondition.doConditionActionOnSelf();
+                            player.GetComponent<ScreenSpaceDamageUI>().createHealText(currentCondition.getName());
                         }
                     }
                 }

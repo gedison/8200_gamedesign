@@ -24,27 +24,22 @@ public class GameStateText : MonoBehaviour {
     private bool setCombatHasBeenCalled = false;
     private bool combatTutorialHasBeenCalled = false;
     public void setStartCombatString() {
-        if (!setCombatHasBeenCalled) {
-            setCombatHasBeenCalled = true;
-            myText.text = tutorialString1;
-            Invoke("DisableTextTutorial", textPopupTime);
-        } else {
-            myText.text = startCombat;
-            if (!combatTutorialHasBeenCalled) {
-                combatTutorialHasBeenCalled = true;
-                Invoke("DisableTextTutorial2", textPopupTime);
-            } else Invoke("DisableText", textPopupTime);
-        } 
+        myText.text = startCombat;
+        if (!combatTutorialHasBeenCalled) {
+            combatTutorialHasBeenCalled = true;
+            Invoke("DisableTextTutorial2", textPopupTime);
+        } else Invoke("DisableText", textPopupTime);
+    }
+
+    public void setTutorialText() {
+        myText.text = tutorialString1;
+        Invoke("DisableTextTutorial", textPopupTime);
     }
 
     private bool setWinHasBeenCalled = false;
     public void setWinString() {
-        if (!setWinHasBeenCalled) {
-            setWinHasBeenCalled = true;
-        }else {
-            myText.text = winString;
-            Invoke("DisableText", textPopupTime);
-        }
+        myText.text = winString;
+        Invoke("DisableText", textPopupTime);
     }
 
     public void setLoseString() {
