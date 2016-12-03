@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour {
     private Skill currentSkill;
     private ArrayList characterSkills = new ArrayList();
 
-    public int visibilityRange = 5;
+    public int visibilityRange = 3;
     public int totalActionPoints = 5;
     private int currentActionPoints;
 

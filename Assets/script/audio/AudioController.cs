@@ -74,7 +74,7 @@ public class AudioController : MonoBehaviour {
                     nextAudio = caveMusic;
                 //Boss
                 } else {
-                    nextAudio = bossMusic;
+                    nextAudio = caveMusic;
                 }
                 break;
             case WorldController.GameState.IN_COMBAT:
@@ -84,7 +84,7 @@ public class AudioController : MonoBehaviour {
                     else nextAudio = fightMusic;
                 //Boss
                 } else {
-                    nextAudio = bossMusic;
+                    nextAudio = fightMusic;
                 }
                 break;
         }

@@ -62,7 +62,7 @@ public class SecondPersonCamera : MonoBehaviour {
         if (player != null &&  isMoving) {
             if (!isCameraWithinDistanceOfPlayer(transform.position.x , transform.position.z, player.transform.position.x, player.transform.position.z, 3.0f)) {
                 transform.position = Vector3.Lerp(this.transform.position, player.transform.position + offset, cameraSpeed * Time.deltaTime);
-                if (Vector3.Distance(transform.position, (player.transform.position + offset)) < .5) isMoving = false;
+                if (Vector3.Distance(transform.position, (player.transform.position + offset)) < 3.0f) isMoving = false;
             }
         }
         
