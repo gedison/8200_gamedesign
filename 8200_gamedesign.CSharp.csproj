@@ -67,6 +67,7 @@
     <Compile Include="Assets\script\InitativeController.cs" />
     <Compile Include="Assets\script\TileController.cs" />
     <Compile Include="Assets\script\WorldController.cs" />
+    <Compile Include="Assets\script\audio\AudioController.cs" />
     <Compile Include="Assets\script\camera\SecondPersonCamera.cs" />
     <Compile Include="Assets\script\character\CharacterController.cs" />
     <Compile Include="Assets\script\character\CharacterMovementController.cs" />
