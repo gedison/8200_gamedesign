@@ -241,8 +241,13 @@ public class WorldController : MonoBehaviour {
             //Player Won Encounter
             if (myInitativeController.getNumberOfPlayersInIntiative() == 1) {
                 if (player != null) {
-                    gamestateText.setWinString();
-
+                    int characterCount = 0;
+                    foreach(GameObject character in allCharacters) {
+                        if (character != null) characterCount++;
+                    }
+                    if (characterCount==1) gamestateText.setGameWinString();
+                    else gamestateText.setWinString();
+                    
                     currentState = GameState.IDLE;
                     CharacterController myCharacterController = player.GetComponent<CharacterController>();
                     myCharacterController.resetSkillsPerEncounter();

@@ -6,13 +6,14 @@ public class GameStateText : MonoBehaviour {
     public Text myText;
 
     private string tutorialString1 = "Click a tile to move";
-    private string tutorialString2 = "Use the right mouse button to pan across the screen";
+    private string tutorialString2 = "Right Mouse button to pan\nCenter Button to rotate";
     private string tutorialString3 = "Click a skill and an enemy to attack";
     private string tutorialString4 = "Different skills have different effects";
 
     public string startCombat = "Enemy Spotted: Begin Combat";
     public string winString = "All Enemies Defeated";
     public string loseString = "Game Over";
+    public string winGameString = "You Defeated All The Enemies!\nYou Win!";
     public float textPopupTime = 3.0f;
 
     void Start () {
@@ -48,6 +49,10 @@ public class GameStateText : MonoBehaviour {
 
     public void setLoseString() {
         myText.text = loseString;
+    }
+
+    public void setGameWinString() {
+        myText.text = winGameString;
     }
 
     void DisableText() {

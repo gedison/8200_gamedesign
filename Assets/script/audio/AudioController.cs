@@ -13,6 +13,7 @@ public class AudioController : MonoBehaviour {
 
     public GameObject musicFollowsMyZCoordinate;
 
+    private Health playerHealth;
     private AudioSource audioSource;
     private AudioClip currentAudio;
     private AudioClip nextAudio;
@@ -25,6 +26,7 @@ public class AudioController : MonoBehaviour {
 
     void Start () {
         timeOut = Mathf.Sqrt(Mathf.Sin(maxAudio));
+        playerHealth = WorldController.instance.player.GetComponent<Health>();
 
         audioSource = this.GetComponent<AudioSource>();
         currentAudio = outdoorMusic;
