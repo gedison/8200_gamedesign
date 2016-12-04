@@ -100,6 +100,7 @@
     <Compile Include="Assets\script\tile\NoMovement.cs" />
     <Compile Include="Assets\script\tile\Normal.cs" />
     <Compile Include="Assets\script\tile\Tile.cs" />
+    <Compile Include="Assets\script\title\TitleController.cs" />
     <Compile Include="Assets\script\traversal\DijkstraTileTraverser.cs" />
     <Compile Include="Assets\script\traversal\Node.cs" />
     <Compile Include="Assets\script\traversal\TileTraverser.cs" />
