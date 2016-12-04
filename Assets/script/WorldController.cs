@@ -46,7 +46,7 @@ public class WorldController : MonoBehaviour {
 		qManager = new QuestManager ();
 		trigger = new QuestTrigger ();
 		qManager.qObjects = Quests;
-        /*
+        
 		foreach (Transform qo in Quests.transform) {
 			GameObject qpar = qo.gameObject;
 			qManager.SetQuests (qpar);
@@ -57,7 +57,7 @@ public class WorldController : MonoBehaviour {
 		if (q == null) Debug.Log ("ebin fugg :DDDDD");
 		trigger.quest = q;
 		trigger.activate ();
-        */
+        
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
