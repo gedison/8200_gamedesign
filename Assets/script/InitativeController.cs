@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* This class is responsible for the game's turn system
+ */
 public class InitativeController {
 
     private GameObject player;
@@ -17,6 +19,7 @@ public class InitativeController {
         charactersInIntiative.Add(player);
     }
 
+    //Checks if the player is within eucledian distance of any enemy
     public bool isPlayerWithinRangeOfEnemy() {
         if (player != null) {
             int playerOrigin = player.GetComponent<CharacterPosition>().getTileID();
@@ -33,6 +36,7 @@ public class InitativeController {
         return false;
     }
 
+    //Adds all characters within distance of player to intiative
     public void addCharactersToIntiative() {
         if (player != null) {
             int playerOrigin = player.GetComponent<CharacterPosition>().getTileID();
@@ -45,8 +49,7 @@ public class InitativeController {
                         charactersInIntiative.Add(enemy.gameObject);
                 }
             }
-        }
-        
+        }     
     }
 
     private void removeAllNullPlayers() {
@@ -69,11 +72,6 @@ public class InitativeController {
     }
 
     public int getNumberOfPlayersInIntiative() {
-        Debug.Log("Initiative: " + charactersInIntiative.Count);
         return charactersInIntiative.Count;
     }
-
-
-
-
 }

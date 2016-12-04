@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour {
     private Profession myProfession;
 
     private int level = 1;
-    private int experience = 0;
+    //private int experience = 0;
     public Health myHealth;
 
     private Die d20 = new Die(20);
@@ -41,6 +41,10 @@ public class CharacterController : MonoBehaviour {
 
         currentActionPoints = totalActionPoints;
 
+        /* Skill attribution currently takes place in this class based on the String value of the character's profession
+         * This isn't the best practice but since we don't have a back end database and the values would have to be hard coded anyway it didn't make
+         * sense to have a whole class devoted to it.
+         */
         switch (professionString) {
             case "Warrior":
                 characterSkills.Add(new BlastSkill("Slash", "A powerful melee attack that targets one enemy within a one tile radius of your character.", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 2, 3, 1, 1));

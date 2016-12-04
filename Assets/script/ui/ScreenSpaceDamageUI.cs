@@ -9,28 +9,24 @@ public class ScreenSpaceDamageUI : MonoBehaviour {
 
     public float offset = 1.0f;
     private float heightIncreasePerSecond = 2f;
-    private float height = 0;
 
     private List<float> heights = new List<float>();
     private List<GameObject> damageList = new List<GameObject>();
 
     public void createDamageText(string damageString) {
-        GameObject damage = Instantiate(damagePrefab) as GameObject;
-        damage.transform.SetParent(canvas.transform, false);
-        Text damageText = damage.GetComponent<Text>();
-        damageText.text = damageString;
-        damageText.color = new Color(1, 0, 0);
-
-        damageList.Add(damage);
-        heights.Add(0);
+        createTextWithColor(damageString, new Color(1, 0, 0));
     }
 
     public void createHealText(string damageString) {
+        createTextWithColor(damageString, new Color(0, 1, 0));
+    }
+
+    public void createTextWithColor(string text, Color color) {
         GameObject damage = Instantiate(damagePrefab) as GameObject;
         damage.transform.SetParent(canvas.transform, false);
         Text damageText = damage.GetComponent<Text>();
-        damageText.text = damageString;
-        damageText.color = new Color(0, 1, 0);
+        damageText.text = text;
+        damageText.color = color;
 
         damageList.Add(damage);
         heights.Add(0);
@@ -47,6 +43,7 @@ public class ScreenSpaceDamageUI : MonoBehaviour {
                     Destroy(toBeDestroyed);
                 }else { 
                     Text myDamageText = damageList[i].GetComponent<Text>();
+                    //Converts the tranform postion of the game object to screen coordinates
                     Vector3 worldPos = new Vector3(transform.position.x, transform.position.y + offset + heights[i], transform.position.z);
                     Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
                     myDamageText.transform.position = new Vector3(screenPos.x, screenPos.y, screenPos.z);
@@ -63,7 +60,4 @@ public class ScreenSpaceDamageUI : MonoBehaviour {
             Destroy(damageList[i]);
         }
     }
-    
-
-    
 }

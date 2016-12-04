@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class EnemyScreenSpaceUI : MonoBehaviour {
 
-    public Canvas canvas;
-    public GameObject healthPrefab;
-    public GameObject healthPanel;
     public float healthPanelOffset = 0.45f;
 
+    public Canvas canvas;
+    public GameObject healthPrefab;
+
+    private GameObject healthPanel;
     private Health enemyHealth;
     private Text enemyName;
     private Slider healthSlider;
@@ -23,7 +24,9 @@ public class EnemyScreenSpaceUI : MonoBehaviour {
 
     void LateUpdate() {
         if (enemyHealth == null) enemyHealth = GetComponent<Health>();
-        healthSlider.value = enemyHealth.getCurrentHealth()/ (float)enemyHealth.totalHealth;
+        healthSlider.value = enemyHealth.getCurrentHealth()/(float)enemyHealth.totalHealth;
+
+        //Converts the tranform postion of the game object to screen coordinates
         Vector3 worldPos = new Vector3(transform.position.x, transform.position.y + healthPanelOffset, transform.position.z);
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
         healthPanel.transform.position = new Vector3(screenPos.x, screenPos.y, screenPos.z);
@@ -32,8 +35,4 @@ public class EnemyScreenSpaceUI : MonoBehaviour {
     public void destroyObject() {
         Destroy(healthPanel);
     }
-
-    
-
-    
 }

@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CharacterPosition : MonoBehaviour {
 
     private int currentTileID = 0;
+
+    /* Uses a downward raycast to determine what tile the object currently occupies
+     * If the occupied tile has changed, tell the previous tile it is no longer occupied, and the new tile that it has
+     * a new inhabitant
+     */
     void Update() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit)) {

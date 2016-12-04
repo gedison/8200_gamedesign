@@ -28,7 +28,6 @@ public class WorldController : MonoBehaviour {
     private InitativeController myInitativeController;
 
     public bool onUI = false;
-    public bool onStart = true;
     public bool playTutorial = true;
     public bool isPlayersTurn = true;
 
@@ -43,8 +42,8 @@ public class WorldController : MonoBehaviour {
         myTileController = new TileController(tiles, tileWidth, tileHeight);
         myInitativeController = new InitativeController(player, enemies, myTileController);
 
-		qManager = new QuestManager ();
-		trigger = new QuestTrigger ();
+		qManager = new QuestManager();
+		trigger = new QuestTrigger();
 		qManager.qObjects = Quests;
         
 		foreach (Transform qo in Quests.transform) {
@@ -61,7 +60,6 @@ public class WorldController : MonoBehaviour {
 
         allCharacters.Add(player);
         foreach (Transform enemy in enemies.transform) allCharacters.Add(enemy.gameObject);
-        onStart = false;
     }
 
     public Transform getTileFromArrayIndex(int tileID) {
@@ -74,37 +72,42 @@ public class WorldController : MonoBehaviour {
 
     private void haveCharacterPreformAttackOnTile(GameObject playerWhosTurnItIs, int tileID) {
         CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
-
         if (myCharacterController.getCurrentActionPoints() < 3 && currentState == GameState.IN_COMBAT) return;
-
         CharacterController.CharacterAttribute versus = myCharacterController.getCurrentSkillVersus();
        
         bool enemyHit = false;
 
         int[] tilesEffectedByPlayerSkill = myTileController.getLastAttack();
-
+        //Check all not null characters to see if they're within range of skill
         foreach (GameObject character in allCharacters) {
             if (character != null) {
                 int characterPosition = character.GetComponent<CharacterPosition>().getTileID();
                 for (int i = 0; i < tilesEffectedByPlayerSkill.Length; i++) {
+                    //If character is within range
                     if (tilesEffectedByPlayerSkill[i] == characterPosition) {
                         enemyHit = true;
                         int playerRole = myCharacterController.roleD20ForCurrentSkill();
                         if (character != playerWhosTurnItIs && character.GetComponent<CharacterController>().roleD20UsingAttributeAsModifier(versus) < playerRole) {
+                            //Calculate skill damage on a character/hit basis
                             int skillDamage = myCharacterController.getDamageFromCurrentSkill();
+
+                            //Create a new damage text
                             if (character.GetComponent<ScreenSpaceDamageUI>() != null) {
                                 ScreenSpaceDamageUI damageUI = character.GetComponent<ScreenSpaceDamageUI>();
                                 damageUI.createDamageText("-"+skillDamage);
                             }
 
+                            //Decrement character health
                             character.GetComponent<CharacterController>().myHealth.decrementCurrentHealthByX(skillDamage);
+
+                            //Apply condition to character if applicable
                             Condition conditionToApply = myCharacterController.getConditionFromCurrentSkill();
                             if(conditionToApply!=null && character.GetComponent<Condition>() == null) {
                                 switch (conditionToApply.getName()) {
                                     case "Dazed":character.AddComponent<Dazed>();break;
                                 }
                             }
-
+                        //If the character is within range but the attack misses create a miss text
                         }else {
                             if (character.GetComponent<ScreenSpaceDamageUI>() != null) {
                                 ScreenSpaceDamageUI damageUI = character.GetComponent<ScreenSpaceDamageUI>();
@@ -116,6 +119,7 @@ public class WorldController : MonoBehaviour {
             }
         }
 
+        //Do the same thing for each destructable object
         foreach (Transform destructableObject in destructableObjects.transform) {
             if (destructableObject != null) {
                 int characterPosition = destructableObject.GetComponent<CharacterPosition>().getTileID();
@@ -128,6 +132,7 @@ public class WorldController : MonoBehaviour {
             }
         }
 
+        //Decrement characters action points
         if (currentState == GameState.IN_COMBAT && enemyHit) {
             myCharacterController.decrementActionPointsByAttack();
             myCharacterController.incrementSkillUsage();
@@ -137,16 +142,13 @@ public class WorldController : MonoBehaviour {
     private void moveCharacterToTile(GameObject playerWhosTurnItIs, int tileID) {
         CharacterController myCharacterController = playerWhosTurnItIs.GetComponent<CharacterController>();
         CharacterMovementController myCharacterMovementController = playerWhosTurnItIs.GetComponent<CharacterMovementController>();
-
         if (myCharacterController.getCurrentActionPoints() < 2 && currentState == GameState.IN_COMBAT) return;
 
         List<Node> path = new List<Node>();
         Node savedNode = myTileController.getLastTraversalPath();
         while (savedNode != null) {
-            if (savedNode.getDistanceFromStart() < myCharacterController.getMovementSpeed())
-                path.Insert(0, savedNode);
-            else
-                myTileController.getTileFromID(savedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
+            if (savedNode.getDistanceFromStart() < myCharacterController.getMovementSpeed())path.Insert(0, savedNode);
+            else myTileController.getTileFromID(savedNode.getID()).GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
             savedNode = savedNode.getPreviousNode();
         }
 
@@ -213,24 +215,23 @@ public class WorldController : MonoBehaviour {
                 playTutorial = false;
             }
             
-
             if (player != null) player.GetComponent<CharacterController>().resetActionPoints();
-
             
+            //Apply condition to player every frame of idle state
             if (player!=null && player.GetComponent<Condition>() != null) {
                 Condition currentCondition = player.GetComponent<Condition>();
                 currentCondition.doConditionActionOnSelf();
                 player.GetComponent<ScreenSpaceDamageUI>().createHealText(currentCondition.getName());
             }
             
-
+            //If player is within range of enemy start combat
             if (myInitativeController.isPlayerWithinRangeOfEnemy()) {
                 Debug.Log("Transition");
                 gamestateText.setStartCombatString();
                 currentState = GameState.IN_COMBAT;
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
-        }else if(currentState == GameState.IN_COMBAT && !onStart) {
+        }else if(currentState == GameState.IN_COMBAT) {
             Debug.Log("COMBAT STATE");
             myInitativeController.addCharactersToIntiative();
 
@@ -253,11 +254,11 @@ public class WorldController : MonoBehaviour {
                         }
                     }
                 }
+
                 //Check if turn is over
                 if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.TURN_OVER && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
                     updateTraversalMap(true);
                     myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.IDLE);
-                    //myCharacterController.resetActionPoints();
                     myInitativeController.endTurn();
                 }   
             }
@@ -285,12 +286,9 @@ public class WorldController : MonoBehaviour {
                 currentState = GameState.IDLE;
                 setAllCharacterStatesToX(CharacterController.CharacterState.IDLE);
             }
-
-           
         }
 
-		qManager.Update ();
-
+        qManager.Update();
         updateTraversalMap(false);
     }
 }

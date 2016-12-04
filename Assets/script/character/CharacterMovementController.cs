@@ -3,26 +3,23 @@ using System.Collections.Generic;
 
 public class CharacterMovementController : MonoBehaviour {
 
+    //Speed that the character is animated to move
     public float animationSpeed = 3.0f;
-    public float movementSpeed = 4;
 
+    //Boolean value to indicate that the characters movement grid needs to be updated
     private bool traversalMapNeedsToBeUpdated = true;
     private Node[] traversalMap;
 
     private List<Node> path;
     private Transform currentTarget;
-    private float playerHeight;
-    private bool isMoving = false;
 
-    void Start() {
-        playerHeight = transform.position.y;
-    }
+    //Is the player currently being animated
+    private bool isMoving = false;
 
     void Update () {
         if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {
-            Debug.Log(this.name + " " + currentTarget);
             Vector3 target = currentTarget.position;
-            target.y = playerHeight;
+            target.y = transform.position.y;
 
             float step = animationSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
@@ -46,6 +43,7 @@ public class CharacterMovementController : MonoBehaviour {
         return traversalMap;
     }
 
+    //Starts the players movement along the path of Nodes
     public void setPath(List<Node> path) {
         isMoving = true;
         this.path = path;
@@ -59,12 +57,17 @@ public class CharacterMovementController : MonoBehaviour {
     }
 
     private bool doesCurrentLocationEqualCurrentTarget() {
+        //Check if the character is at their goal
         if(transform.position.x == currentTarget.transform.position.x && transform.position.z == currentTarget.transform.position.z) {
+            //Change the tile state to visited
             currentTarget.GetComponent<Tile>().setCurrentState(Tile.TileState.NOT_SELECTED);
+            //If the players path is not empty
             if (path.Count > 0) {
+                //Set the next movement goal
                 currentTarget = WorldController.instance.getTileFromArrayIndex(path[0].getID());
                 path.RemoveAt(0);
             } else {
+                //Else end the players movement
                 traversalMapNeedsToBeUpdated = true;
                 currentTarget = null;
                 isMoving = false;

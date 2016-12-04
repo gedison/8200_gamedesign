@@ -2,7 +2,7 @@
 
 public class TileController{
 
-    private int tileWidth, tileHeight;
+    private int tileWidth;
     private Transform[] tileArray;
     private TileTraverser tileTraverser = null;
 
@@ -11,7 +11,6 @@ public class TileController{
 
     public TileController(GameObject tiles, int tileWidth, int tileHeight) {
         this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
         tileArray = new Transform[tileHeight * tileWidth];
 
         int height = 0, width = 0;

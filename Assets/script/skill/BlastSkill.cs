@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/* A blast skill on the other hand affects a tiles in an x by y formation n units away from the player, the hardcoded values are here again, because I don't like 
+ * math
+ */
 public class BlastSkill : Skill {
 
     private int blastSize, maxDistanceFromPlayer;
@@ -28,6 +32,7 @@ public class BlastSkill : Skill {
     public ArrayList getTilesAffectedBySkillFromOrigin(int boardWidth, int boardHeight, int skillOrigin, int playerOrigin) {
         ArrayList ret = new ArrayList();
       
+        //The if statements cascade into each other increasing the size of the blast with the radius
         if (blastSize >= 1) {
             ret.Add(skillOrigin);
         }

@@ -6,7 +6,9 @@ public abstract class Skill {
     private string skillName, skillDescription;
     private int numberOfDice, numberOfSidesOnDie;
     private Die myDie;
+
     private Condition conditionToBeApplied = null;
+
     private int usesPerEncounter = 0;
     private int timesUsed = 0;
 

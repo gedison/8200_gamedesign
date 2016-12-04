@@ -1,6 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 
+
+/* A burst skill is a Dnd turn that indicates that it effects all the tiles surrounding a player up to a certain radius
+ * I'm hard coding the affected tiles because I don't like to do math 
+ */
 public class BurstSkill : Skill {
 
     private int burstSize;

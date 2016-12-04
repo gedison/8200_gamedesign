@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
+/* Controls the Character UI at the upper left hand corner of the screen
+ * Includes the character portrait, health, and action points
+ */
 public class CharacterUIController : MonoBehaviour {
 
     public GameObject player;
@@ -11,10 +13,8 @@ public class CharacterUIController : MonoBehaviour {
     private CharacterController myCharacterController;
     private Health myCharacterHealth;
 
-    // Use this for initialization
     void Start () {
         myCharacterController = player.GetComponent<CharacterController>();
-
     }
 
     void Update() {

@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
-
-   
     public int totalHealth = 20;
     private int currentHealth;
 
@@ -25,6 +22,7 @@ public class Health : MonoBehaviour {
 
 
     void Update() {
+        //On death update the game board and delete the component's game object and any associated UI
         if (currentHealth == 0) {
             int currentInstanceID = GetComponent<CharacterPosition>().getTileID();
             WorldController.instance.switchTileIsOccupied(currentInstanceID);

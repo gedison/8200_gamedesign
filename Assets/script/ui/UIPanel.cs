@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-    using UnityEngine.UI;
 using UnityEngine.EventSystems;
+
+/* Prevents the player from clicking on the grid when their mouse is on the UI bar
+ */
 
 public class UIPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 

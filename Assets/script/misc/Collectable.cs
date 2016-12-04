@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Collectable : MonoBehaviour {
 
     public string type;
 
     void Start() {
-        Debug.Log("START");
         Collider myCollider = this.GetComponent<Collider>();
         myCollider.isTrigger = true;
     }
 
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("TRIGGERED");
         switch (type) {
             case "cure": other.gameObject.AddComponent<Cure>(); break;
         }

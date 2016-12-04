@@ -21,7 +21,6 @@ public class GameStateText : MonoBehaviour {
 	}
 
 
-    private bool setCombatHasBeenCalled = false;
     private bool combatTutorialHasBeenCalled = false;
     public void setStartCombatString() {
         myText.text = startCombat;

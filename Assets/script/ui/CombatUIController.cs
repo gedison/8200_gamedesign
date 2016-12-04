@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/* Controls the characters skill bar including the skill buttons, move button, and end turn button
+ */ 
 public class CombatUIController : MonoBehaviour {
 
     public GameObject player;
@@ -16,6 +18,7 @@ public class CombatUIController : MonoBehaviour {
     private ArrayList skills = new ArrayList();
     private bool setSkillNames = false;
 
+    //On start add on click listeners to all of the buttons
     void Start () {
         myCharacterController = player.GetComponent<CharacterController>();
         movementButton.onClick.AddListener(setPlayerToMove);
@@ -47,24 +50,23 @@ public class CombatUIController : MonoBehaviour {
     }
 
     public void Update() {
+        //Set button names and tool tips
         if (!setSkillNames) {
             Button[] buttons = skillPanel.GetComponentsInChildren<Button>();
             for (int i = 0; i < buttons.Length; i++) {
                 Skill skill = myCharacterController.getSkillAtIndex(i);
                 if (skill != null) {
-                    Debug.Log(skill.getSkillName());
                     buttons[i].GetComponentInChildren<Text>().text = skill.getSkillName();
                     buttons[i].GetComponent<ToolTipTrigger>().setSkill(skill);
                     setSkillNames = true;
                 }
             }
 
-
-            //Set Move ToolTip
             movementButton.GetComponent<ToolTipTrigger>().setMove(myCharacterController.getMovementSpeed());
             endTurnButton.GetComponent<ToolTipTrigger>().setTipToValues(new string[] { "End Turn", "N/A", "You're finished with your turn or you've ran out of AP, press this button to allow the rest of the encounter to procede.", "No Damage"});
         }
 
+        //The next three if statements change the colors of the buttons on the skill bar based on the number of action points the player has
         if(player!=null && myCharacterController.getCurrentActionPoints() == 5) {
             ColorBlock temp = movementButton.colors;
             temp.normalColor = skillIsAvailable;
@@ -94,10 +96,5 @@ public class CombatUIController : MonoBehaviour {
             temp.normalColor = skillIsUnavailable;
             movementButton.colors = temp;
         }
-
-
-
-
-
     }
 }
