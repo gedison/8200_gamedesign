@@ -48,6 +48,7 @@ public class GameStateText : MonoBehaviour {
 
     public void setGameWinString() {
         myText.text = winGameString;
+        Invoke("DisableText", textPopupTime);
     }
 
     void DisableText() {
