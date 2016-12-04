@@ -5,6 +5,7 @@ public class CharacterMovementController : MonoBehaviour {
 
     //Speed that the character is animated to move
     public float animationSpeed = 3.0f;
+	public Animator pAnim = null;
 
     //Boolean value to indicate that the characters movement grid needs to be updated
     private bool traversalMapNeedsToBeUpdated = true;
@@ -15,6 +16,10 @@ public class CharacterMovementController : MonoBehaviour {
 
     //Is the player currently being animated
     private bool isMoving = false;
+
+	void Start () {
+		pAnim = GetComponentInParent<Animator> ();
+	}
 
     void Update () {
         if (currentTarget != null && !doesCurrentLocationEqualCurrentTarget()) {
@@ -46,6 +51,9 @@ public class CharacterMovementController : MonoBehaviour {
     //Starts the players movement along the path of Nodes
     public void setPath(List<Node> path) {
         isMoving = true;
+		if (pAnim != null) {
+			pAnim.SetBool ("IsMoving", true);
+		}
         this.path = path;
         currentTarget = WorldController.instance.getTileFromArrayIndex(path[0].getID());
         path.RemoveAt(0);
@@ -70,6 +78,9 @@ public class CharacterMovementController : MonoBehaviour {
                 //Else end the players movement
                 traversalMapNeedsToBeUpdated = true;
                 currentTarget = null;
+				if (pAnim != null) {
+					pAnim.SetBool ("IsMoving", false);
+				}
                 isMoving = false;
             }
             return true;
