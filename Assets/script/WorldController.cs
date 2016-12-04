@@ -133,7 +133,7 @@ public class WorldController : MonoBehaviour {
         }
 
         //Decrement characters action points
-        if (currentState == GameState.IN_COMBAT && enemyHit) {
+        if (currentState == GameState.IN_COMBAT && (enemyHit || playerWhosTurnItIs != player)) {
             myCharacterController.decrementActionPointsByAttack();
             myCharacterController.incrementSkillUsage();
         }

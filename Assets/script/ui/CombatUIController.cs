@@ -15,7 +15,6 @@ public class CombatUIController : MonoBehaviour {
     public Color skillIsUnavailable = new Color(.66f, .67f, .7f);
 
     private CharacterController myCharacterController;
-    private ArrayList skills = new ArrayList();
     private bool setSkillNames = false;
 
     //On start add on click listeners to all of the buttons

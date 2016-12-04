@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 1aa06a6db98c9a64f938bcce05a92d49
+timeCreated: 1480887059
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arm_L
+    100002: arm_R
+    100004: chest
+    100006: //RootNode
+    100008: foot_L
+    100010: foot_R
+    100012: forearm_L
+    100014: forearm_R
+    100016: hand_L
+    100018: hand_R
+    100020: head
+    100022: head_top
+    100024: HIPS
+    100026: joint15
+    100028: joint15 1
+    100030: leg_L
+    100032: leg_R
+    100034: neck
+    100036: pCube1
+    100038: pCube2
+    100040: pCube3
+    100042: pCube4
+    100044: pCube5
+    100046: pCube6
+    100048: pCylinder1
+    100050: place3dTexture1
+    100052: polySurface1
+    100054: polySurface2
+    100056: shoulder_L
+    100058: shoulder_R
+    100060: spine
+    100062: toe_end_L
+    100064: toe_end_R
+    100066: toe_L
+    100068: toe_R
+    100070: transform1
+    100072: transform2
+    100074: transform3
+    100076: transform4
+    100078: transform5
+    100080: transform6
+    100082: transform7
+    100084: upleg_L
+    100086: upleg_R
+    400000: arm_L
+    400002: arm_R
+    400004: chest
+    400006: //RootNode
+    400008: foot_L
+    400010: foot_R
+    400012: forearm_L
+    400014: forearm_R
+    400016: hand_L
+    400018: hand_R
+    400020: head
+    400022: head_top
+    400024: HIPS
+    400026: joint15
+    400028: joint15 1
+    400030: leg_L
+    400032: leg_R
+    400034: neck
+    400036: pCube1
+    400038: pCube2
+    400040: pCube3
+    400042: pCube4
+    400044: pCube5
+    400046: pCube6
+    400048: pCylinder1
+    400050: place3dTexture1
+    400052: polySurface1
+    400054: polySurface2
+    400056: shoulder_L
+    400058: shoulder_R
+    400060: spine
+    400062: toe_end_L
+    400064: toe_end_R
+    400066: toe_L
+    400068: toe_R
+    400070: transform1
+    400072: transform2
+    400074: transform3
+    400076: transform4
+    400078: transform5
+    400080: transform6
+    400082: transform7
+    400084: upleg_L
+    400086: upleg_R
+    4300000: pCylinder1
+    4300002: pCube6
+    9500000: //RootNode
+    13700000: pCube6
+    13700002: pCylinder1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -35,7 +35,7 @@ public class GameStateText : MonoBehaviour {
         Invoke("DisableTextTutorial", textPopupTime);
     }
 
-    private bool setWinHasBeenCalled = false;
+    
     public void setWinString() {
         myText.text = winString;
         Invoke("DisableText", textPopupTime);
