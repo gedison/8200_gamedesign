@@ -20,7 +20,7 @@ public class InitativeController {
     public bool isPlayerWithinRangeOfEnemy() {
         if (player != null) {
             int playerOrigin = player.GetComponent<CharacterPosition>().getTileID();
-            int playerVisibilityRange = player.GetComponent<CharacterController>().visibilityRange;
+            int playerVisibilityRange = 4;// player.GetComponent<CharacterController>().visibilityRange;
 
             foreach (Transform enemy in enemies.transform) {
                 if (enemy != null) { 
@@ -36,7 +36,7 @@ public class InitativeController {
     public void addCharactersToIntiative() {
         if (player != null) {
             int playerOrigin = player.GetComponent<CharacterPosition>().getTileID();
-            int playerVisibilityRange = player.GetComponent<CharacterController>().visibilityRange;
+            int playerVisibilityRange = 4;// player.GetComponent<CharacterController>().visibilityRange;
 
             foreach (Transform enemy in enemies.transform) {
                 int enemyOrigin = enemy.GetComponent<CharacterPosition>().getTileID();

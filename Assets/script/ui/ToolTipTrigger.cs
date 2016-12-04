@@ -89,6 +89,7 @@ public class ToolTipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void StartHover() {
         if (shouldHoverBeStarted) {
+            toolTip.transform.position = new Vector3(transform.position.x-50, transform.position.y + 110, transform.position.z);
             toolTip.SetActive(true);
         }
     }
