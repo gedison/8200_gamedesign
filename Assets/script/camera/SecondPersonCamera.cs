@@ -12,10 +12,11 @@ public class SecondPersonCamera : MonoBehaviour {
     private float rotX = 60, rotY = -90, rotZ = 0;
 
     private float yOffset = 0f;
+    private float maxDistance = 5.5f;
 
 
     void Start() {
-        cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed-3;
+        cameraSpeed = player.GetComponent<CharacterMovementController>().movementSpeed-1;
         offset.y += player.transform.position.y;
         transform.position = player.transform.position + offset;
     }
@@ -37,7 +38,7 @@ public class SecondPersonCamera : MonoBehaviour {
             delta = delta * mouseSensitivity;
             delta = Quaternion.Euler(0, 0, -yOffset) * delta;
 
-            if(player!=null && isCameraWithinDistanceOfPlayer(transform.position.x+delta.y, transform.position.z-delta.x, player.transform.position.x, player.transform.position.z, 5.0f))
+            if(player!=null && isCameraWithinDistanceOfPlayer(transform.position.x+delta.y, transform.position.z-delta.x, player.transform.position.x, player.transform.position.z, maxDistance))
                 transform.Translate(delta.y, 0, -delta.x, Space.World);
 
             lastPosition = Input.mousePosition;
@@ -46,7 +47,7 @@ public class SecondPersonCamera : MonoBehaviour {
         
         if (Input.GetMouseButton(2)) {
             Vector3 delta = Input.mousePosition - lastPosition;
-            if (Vector3.Distance(transform.position, (player.transform.position + offset)) < 6) {
+            if (Vector3.Distance(transform.position, (player.transform.position + offset)) < maxDistance) {
                 transform.RotateAround(player.transform.position, new Vector3(0, 1), delta.x * .5f);
                 yOffset += delta.x * .5f;
             }

@@ -43,11 +43,14 @@ public class EnemyPrototype : CharacterController {
                 }
             }
         }else if(this.getCurrentCharacterState() == CharacterState.ATTACK) {
-            int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();
+            if (ctrl.player != null) {
+                int playerTile = ctrl.player.GetComponent<CharacterPosition>().getTileID();
+                Debug.Log("NPC ATTACK");
+                ctrl.onTileHover(playerTile);
+                ctrl.onTileSelect(playerTile);
+            } else setActionPointsToZero();
 
-            Debug.Log("NPC ATTACK");
-            ctrl.onTileHover(playerTile);
-            ctrl.onTileSelect(playerTile);
+            
 
             if (getCurrentActionPoints() < 3) {
                 counter += Time.deltaTime;

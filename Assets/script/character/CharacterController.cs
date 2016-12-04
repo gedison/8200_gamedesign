@@ -30,6 +30,7 @@ public class CharacterController : MonoBehaviour {
     public void Start() {
         switch (professionString) {
             case "Warrior": myProfession = new Warrior(); break;
+            case "Minion Boss": myProfession = new MinionBoss();break;
             case "Minion": myProfession = new Minion(); break;
             case "Ranged Minion": myProfession = new RangedMinion(); break;
             default: myProfession = new Warrior(); break;

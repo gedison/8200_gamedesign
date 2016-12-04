@@ -13,7 +13,7 @@ public class GameStateText : MonoBehaviour {
     public string startCombat = "Enemy Spotted: Begin Combat";
     public string winString = "All Enemies Defeated";
     public string loseString = "Game Over";
-    public string winGameString = "You Defeated All The Enemies!\nYou Win!";
+    public string winGameString = "You saved the children!\nYou Win!";
     public float textPopupTime = 3.0f;
 
     void Start () {

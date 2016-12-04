@@ -111,6 +111,7 @@
     <Compile Include="Assets\script\ui\GameStateText.cs" />
     <Compile Include="Assets\script\ui\JournalDisplay.cs" />
     <Compile Include="Assets\script\ui\ScreenSpaceDamageUI.cs" />
+    <Compile Include="Assets\script\ui\ScreenSpaceDialog.cs" />
     <Compile Include="Assets\script\ui\ToolTipTrigger.cs" />
     <Compile Include="Assets\script\ui\UIPanel.cs" />
     <Compile Include="Assets\script\ui_element\UICircle2.cs" />
