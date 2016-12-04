@@ -30,6 +30,7 @@ public class WorldController : MonoBehaviour {
     public bool onUI = false;
     public bool onStart = true;
     public bool playTutorial = true;
+    public bool isPlayersTurn = true;
 
     void Awake() {
         if (instance == null) instance = this;
@@ -205,6 +206,7 @@ public class WorldController : MonoBehaviour {
     void Update() {
         if(currentState == GameState.IDLE) {
             Debug.Log("IDLE GAMESTATE");
+            isPlayersTurn = true;
 
             if (playTutorial) {
                 gamestateText.setTutorialText();
@@ -236,6 +238,9 @@ public class WorldController : MonoBehaviour {
             if (characterWhosTurnItIs == null) myInitativeController.endTurn(); 
             else {
                 CharacterController myCharacterController = characterWhosTurnItIs.GetComponent<CharacterController>();
+                if (characterWhosTurnItIs == player) isPlayersTurn = true;
+                else isPlayersTurn = false;
+
                 if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.IDLE) {
                     myCharacterController.startTurn();
 
@@ -252,6 +257,7 @@ public class WorldController : MonoBehaviour {
                 if (myCharacterController.getCurrentCharacterState() == CharacterController.CharacterState.TURN_OVER && !characterWhosTurnItIs.GetComponent<CharacterMovementController>().isCharacterMoving()) {
                     updateTraversalMap(true);
                     myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.IDLE);
+                    //myCharacterController.resetActionPoints();
                     myInitativeController.endTurn();
                 }   
             }

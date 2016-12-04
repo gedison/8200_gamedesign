@@ -14,8 +14,6 @@ public class ScreenSpaceDamageUI : MonoBehaviour {
     private List<float> heights = new List<float>();
     private List<GameObject> damageList = new List<GameObject>();
 
-
-
     public void createDamageText(string damageString) {
         GameObject damage = Instantiate(damagePrefab) as GameObject;
         damage.transform.SetParent(canvas.transform, false);

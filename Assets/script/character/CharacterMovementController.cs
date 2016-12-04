@@ -53,6 +53,7 @@ public class CharacterMovementController : MonoBehaviour {
         path.RemoveAt(0);
     }
 
+
     public bool isCharacterMoving() {
         return isMoving;
     }

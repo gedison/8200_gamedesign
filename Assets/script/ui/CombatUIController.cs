@@ -29,13 +29,13 @@ public class CombatUIController : MonoBehaviour {
     }
 
     private void setPlayerToAttackUsingSkill(int skillID) {
-        if (player != null) {
+        if (player != null && WorldController.instance.isPlayersTurn) {
             myCharacterController.setSkillAtIndexToActive(skillID);
         }
     }
 
     private void setPlayerToMove() {
-        if (player != null) myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.MOVE);
+        if (player != null && WorldController.instance.isPlayersTurn) myCharacterController.setCurrentCharacterState(CharacterController.CharacterState.MOVE);
     }
 
     private void endPlayerTurn() {
