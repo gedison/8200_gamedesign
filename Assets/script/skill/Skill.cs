@@ -8,6 +8,7 @@ public abstract class Skill {
     private Die myDie;
 
     private Condition conditionToBeApplied = null;
+    private Condition conditionToBeAppliedToPlayer = null;
 
     private int usesPerEncounter = 0;
     private int timesUsed = 0;
@@ -49,8 +50,16 @@ public abstract class Skill {
         conditionToBeApplied = condition;
     }
 
+    public void setConditionToBeAppliedToPlayer(Condition condition) {
+        conditionToBeAppliedToPlayer = condition;
+    }
+
     public Condition getCondition() {
         return conditionToBeApplied;
+    }
+
+    public Condition getConditionToBeAppliedToPlayer() {
+        return conditionToBeAppliedToPlayer;
     }
 
     public string getSkillName() {

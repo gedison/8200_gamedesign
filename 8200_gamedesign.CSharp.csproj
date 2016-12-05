@@ -95,6 +95,7 @@
     <Compile Include="Assets\script\skill\Condition\Condition.cs" />
     <Compile Include="Assets\script\skill\Condition\Cure.cs" />
     <Compile Include="Assets\script\skill\Condition\Dazed.cs" />
+    <Compile Include="Assets\script\skill\Condition\DazedMin.cs" />
     <Compile Include="Assets\script\skill\Skill.cs" />
     <Compile Include="Assets\script\tile\Difficult.cs" />
     <Compile Include="Assets\script\tile\NoMovement.cs" />

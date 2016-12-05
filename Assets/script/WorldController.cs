@@ -107,8 +107,16 @@ public class WorldController : MonoBehaviour {
                                     case "Dazed":character.AddComponent<Dazed>();break;
                                 }
                             }
-                        //If the character is within range but the attack misses create a miss text
-                        }else {
+
+                            //Apply condition to user if applicable
+                            Condition conditionToApplyToPlayer = myCharacterController.getConditionToApplyToPlayerFromCurrentSkill();
+                            if (conditionToApplyToPlayer != null && playerWhosTurnItIs.GetComponent<Condition>() == null) {
+                                switch (conditionToApplyToPlayer.getName()) {
+                                    case "DazedMin": playerWhosTurnItIs.AddComponent<DazedMin>(); break;
+                                }
+                            }
+                            //If the character is within range but the attack misses create a miss text
+                        } else {
                             if (character.GetComponent<ScreenSpaceDamageUI>() != null) {
                                 ScreenSpaceDamageUI damageUI = character.GetComponent<ScreenSpaceDamageUI>();
                                 damageUI.createDamageText("miss");

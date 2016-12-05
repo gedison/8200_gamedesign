@@ -53,6 +53,11 @@ public class CharacterController : MonoBehaviour {
                 temp.setCondition(new Dazed());
                 temp.setUsesPerEncounter(1);
                 characterSkills.Add(temp);
+                BlastSkill temp2 = new BlastSkill("Killing\nBlow", "An exhaustingly powerful hit. It takes one turn to recover. This attack can be used once per encounter.", CharacterAttribute.STRENGTH, CharacterAttribute.ARMOR_CLASS, 2, 6, 1, 1);
+                temp2.setConditionToBeAppliedToPlayer(new DazedMin());
+                temp2.setUsesPerEncounter(1);
+                characterSkills.Add(temp2);
+
                 currentSkill = (Skill)characterSkills[0];
                 break;
             case "Minion Boss":
@@ -120,6 +125,10 @@ public class CharacterController : MonoBehaviour {
 
     public Condition getConditionFromCurrentSkill() {
         return currentSkill.getCondition();
+    }
+
+    public Condition getConditionToApplyToPlayerFromCurrentSkill() {
+        return currentSkill.getConditionToBeAppliedToPlayer();
     }
 
     public CharacterAttribute getCurrentSkillVersus() {
