@@ -53,9 +53,11 @@ public class WorldController : MonoBehaviour {
 
 		// Acquire our quest to hand to the trigger
 		QuestTemplate q = quest.GetComponent<KillEnemiesStage1> ();
+		Debug.Log ("Test: " + q.getDescription ());
 		if (q == null) Debug.Log ("ebin fugg :DDDDD");
 		trigger.quest = q;
 		trigger.activate ();
+		q.start ();
         
 
         allCharacters.Add(player);

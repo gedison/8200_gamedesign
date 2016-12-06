@@ -127,7 +127,7 @@ public class QuestManager : MonoBehaviour {
 	}
 
 	// Get the number of active quests
-	int getActiveCount () {
+	public int getActiveCount () {
 		return active.Count;
 	}
 

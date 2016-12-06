@@ -10,7 +10,7 @@ public class JournalDisplay : MonoBehaviour {
 	public GameObject child;
 	public Scrollbar bar;
 
-	void Update () {
+	public void Update () {
 		if (!instantiated) {
 			text = "Did this work?";
 			GetComponent <ScrollRect> ().verticalScrollbar = bar;
@@ -19,6 +19,7 @@ public class JournalDisplay : MonoBehaviour {
 		// Get a string containing the different quest descriptions
 		text = WorldController.instance.qManager.getDescriptions ();
 
+		Debug.Log ("Active: " + WorldController.instance.qManager.getActiveCount ());
 		Debug.Log ("Log: " + text);
 
 		child.GetComponent<Text> ().text = text;
